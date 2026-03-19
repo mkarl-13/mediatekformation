@@ -9,8 +9,8 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PlaylistRepository::class)]
-class Playlist
-{
+class Playlist {
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -28,35 +28,29 @@ class Playlist
     #[ORM\OneToMany(targetEntity: Formation::class, mappedBy: 'playlist')]
     private Collection $formations;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->formations = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
+    public function getId(): ?int {
         return $this->id;
     }
 
-    public function getName(): ?string
-    {
+    public function getName(): ?string {
         return $this->name;
     }
 
-    public function setName(?string $name): static
-    {
+    public function setName(?string $name): static {
         $this->name = $name;
 
         return $this;
     }
 
-    public function getDescription(): ?string
-    {
+    public function getDescription(): ?string {
         return $this->description;
     }
 
-    public function setDescription(?string $description): static
-    {
+    public function setDescription(?string $description): static {
         $this->description = $description;
 
         return $this;
@@ -65,13 +59,11 @@ class Playlist
     /**
      * @return Collection<int, Formation>
      */
-    public function getFormations(): Collection
-    {
+    public function getFormations(): Collection {
         return $this->formations;
     }
 
-    public function addFormation(Formation $formation): static
-    {
+    public function addFormation(Formation $formation): static {
         if (!$this->formations->contains($formation)) {
             $this->formations->add($formation);
             $formation->setPlaylist($this);
@@ -80,32 +72,29 @@ class Playlist
         return $this;
     }
 
-    public function removeFormation(Formation $formation): static
-    {
-        if ($this->formations->removeElement($formation)) {
+    public function removeFormation(Formation $formation): static {
+        if ($this->formations->removeElement($formation) &&
+                $formation->getPlaylist() === $this) {
             // set the owning side to null (unless already changed)
-            if ($formation->getPlaylist() === $this) {
-                $formation->setPlaylist(null);
-            }
+            $formation->setPlaylist(null);
         }
 
         return $this;
     }
-    
+
     /**
      * @return Collection<int, string>
      */
-    public function getCategoriesPlaylist() : Collection
-    {
+    public function getCategoriesPlaylist(): Collection {
         $categories = new ArrayCollection();
-        foreach($this->formations as $formation){
+        foreach ($this->formations as $formation) {
             $categoriesFormation = $formation->getCategories();
-            foreach($categoriesFormation as $categorieFormation)
-            if(!$categories->contains($categorieFormation->getName())){
-                $categories[] = $categorieFormation->getName();
+            foreach ($categoriesFormation as $categorieFormation) {
+                if (!$categories->contains($categorieFormation->getName())) {
+                    $categories[] = $categorieFormation->getName();
+                }
             }
         }
         return $categories;
     }
-        
 }

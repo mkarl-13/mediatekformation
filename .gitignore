@@ -23,3 +23,9 @@
 /public/assets/
 /assets/vendor/
 ###< symfony/asset-mapper ###
+
+###> documents ###
+/AP1_missions.pdf
+/cahier_des_charges.pdf
+/contratDeveloppement.pdf
+###< documents ###

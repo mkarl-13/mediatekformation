@@ -8,8 +8,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CategorieRepository::class)]
-class Categorie
-{
+class Categorie {
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -24,23 +24,19 @@ class Categorie
     #[ORM\ManyToMany(targetEntity: Formation::class, mappedBy: 'categories')]
     private Collection $formations;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->formations = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
+    public function getId(): ?int {
         return $this->id;
     }
 
-    public function getName(): ?string
-    {
+    public function getName(): ?string {
         return $this->name;
     }
 
-    public function setName(?string $name): static
-    {
+    public function setName(?string $name): static {
         $this->name = $name;
 
         return $this;
@@ -49,13 +45,11 @@ class Categorie
     /**
      * @return Collection<int, Formation>
      */
-    public function getFormations(): Collection
-    {
+    public function getFormations(): Collection {
         return $this->formations;
     }
 
-    public function addFormation(Formation $formation): static
-    {
+    public function addFormation(Formation $formation): static {
         if (!$this->formations->contains($formation)) {
             $this->formations->add($formation);
             $formation->addCategory($this);
@@ -64,8 +58,7 @@ class Categorie
         return $this;
     }
 
-    public function removeFormation(Formation $formation): static
-    {
+    public function removeFormation(Formation $formation): static {
         if ($this->formations->removeElement($formation)) {
             $formation->removeCategory($this);
         }
