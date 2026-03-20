@@ -65,6 +65,9 @@ class PlaylistsController extends AbstractController {
             case "name":
                 $playlists = $this->playlistRepository->findAllOrderByName($ordre);
                 break;
+            case "formations":
+                $playlists = $this->playlistRepository->findAllOrderByFormationsCount($ordre);
+                break;
             default:
                 # Ne rien faire si le champ est inconnu
                 break;
