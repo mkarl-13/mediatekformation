@@ -1,0 +1,71 @@
+{% extends "baseadmin.html.twig" %}
+{% block body %}
+    <div class="w-75 mx-auto">
+        <form method="post" action="{{ formation 
+            ? path('admin_formations_update', { id: formation.id }) 
+            : path('admin_formations_create') }}">
+            <h3>Modification / création de formation</h3>
+            <div class="d-flex gap-4">
+
+                <!-- Colonne gauche -->
+                <div class="d-flex flex-column flex-grow-1">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <label for="titre" class="form-label mb-0 text-nowrap">Titre <span class="text-danger">*</span></label>
+                        <input type="text" id="titre" name="titre" class="form-control" value="{{ formation ? formation.title : ''}}" required>
+                    </div>
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <label for="date" class="form-label mb-0 text-nowrap">Date <span class="text-danger">*</span></label>
+                        <input type="date" id="date" name="date" class="form-control" 
+                               value="{{ formation ? formation.publishedAt|date('Y-m-d') : ''}}" 
+                               max="{{ "now"|date("Y-m-d") }}"
+                               required>
+                    </div>
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <label for="description" class="form-label mb-0">Description</label>
+                        <textarea id="description" name="description" class="form-control" rows="8">{{ formation ? formation.description : '' }}</textarea>
+                    </div>
+                </div>
+
+                <!-- Colonne droite -->
+                <div class="d-flex flex-column flex-grow-1">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <label for="videoId" class="form-label mb-0 text-nowrap">Vidéo <span class="text-danger">*</span></label>
+                        <input type="text" id="videoId" name="videoId" class="form-control" value="{{ formation ? formation.videoId : '' }}" required>
+                    </div>
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <label for="playlist" class="form-label mb-0 text-nowrap">Playlist <span class="text-danger">*</span></label>
+                        <select id="playlist" name="playlist" class="form-select" required>
+                            {% for playlist in playlists %}
+                                <option value="{{ playlist.id }}"
+                                    {{ formation and formation.playlist and formation.playlist.id == playlist.id ? 'selected' : '' }}>
+                                    {{ playlist.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <label for="categories" class="form-label mb-0">Catégories</label>
+                        <select id="categories" name="categories[]" class="form-select" multiple>
+                            {% for categorie in categories %}
+                                <option value="{{ categorie.id }}"
+                                    {% if formation and formation.categories.contains(categorie) %}
+                                        selected
+                                    {% endif %}>{{ categorie.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="text-end mt-3">
+                <span class="me-2 text-muted">Les champs marqués d'une * sont obligatoires</span>
+                <a href={{ path('admin_formations') }} class="btn btn-secondary btn-sm">Retour</a>
+                <input type="submit" value="Valider" class="btn btn-primary btn-sm">
+            </div>
+                
+            <input type="hidden" name="_token" value="{{ csrf_token(formation ? 'edit' ~ formation.id : 'create') }}">
+        </form>
+    </div>
+{% endblock %}
