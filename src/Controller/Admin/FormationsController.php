@@ -43,7 +43,7 @@ class FormationsController extends AbstractController {
         $this->playlistRepository = $playlistRepository;
     }
     
-    #[Route('/admin/formations', name: 'admin_formations')]
+    #[Route('/admin/formations', name: 'admin.formations')]
     public function index(): Response {
         $formations = $this->formationRepository->findAll();
         $categories = $this->categorieRepository->findAll();
@@ -67,7 +67,7 @@ class FormationsController extends AbstractController {
             $formationRepository->remove($formation);
         }
         
-        return $this->redirectToRoute('admin_formations');
+        return $this->redirectToRoute('admin.formations');
     }
     
     #[Route('/admin/formations/formation/{id}', name: 'admin_formations_showone')]
@@ -113,7 +113,7 @@ class FormationsController extends AbstractController {
             $formationRepository->add($formation);
         }
 
-        return $this->redirectToRoute('admin_formations');
+        return $this->redirectToRoute('admin.formations');
     }
     
     #[Route('/admin/formations/create', name: 'admin_formations_create', methods: ['POST'])]
@@ -137,7 +137,7 @@ class FormationsController extends AbstractController {
             $this->formationRepository->add($formation);
         }
         
-        return $this->redirectToRoute('admin_formations');
+        return $this->redirectToRoute('admin.formations');
     }
     
     #[Route('admin/formations/tri/{champ}/{ordre}/{table}', name: 'admin_formations_sort')]
