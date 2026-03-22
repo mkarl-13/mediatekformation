@@ -2,46 +2,83 @@ format 224
 
 classcanvas 128002 class_ref 128130 // Utilisateur
   simpleclassdiagramsettings end
-  xyz 521.1 419 2000
+  xyz 562 440.6 2000
 end
 classcanvas 128130 class_ref 128258 // Administrateur
   simpleclassdiagramsettings end
-  xyz 192.9 417.9 2000
+  xyz 211.9 442.5 2000
 end
 subject 128258 "MediatekFormations"
-  xyzwh 50 194 1995 665 304
+  xyzwh 42 35.7 1995 750 485
 usecasecanvas 128386 usecase_ref 128130 // Voir les formations
-  xyzwh 567.3 288.8 3005 64 32 label_xy 552 318
+  xyzwh 634.4 353.5 3005 64 32 label_xy 619 384
 end
 usecasecanvas 128514 usecase_ref 128258 // Voir les playlists
-  xyzwh 454.4 286 3005 64 32 label_xy 441 319
+  xyzwh 474.1 350.3 3005 64 32 label_xy 461 382
 end
-usecasecanvas 129794 usecase_ref 128386 // Gerer les formations
-  xyzwh 307.5 308.5 3005 64 32 label_xy 285 341
+usecasecanvas 129794 usecase_ref 128386 // Formations
+  xyzwh 329.5 125.8 3005 64 32 label_xy 327 157
 end
-usecasecanvas 129922 usecase_ref 128514 // Gerer les playlists
-  xyzwh 110.6 309.5 3005 64 32 label_xy 97 341
+usecasecanvas 129922 usecase_ref 128514 // Playlists
+  xyzwh 155.6 155.3 3005 64 32 label_xy 163 186
 end
 subject 130306 "Back Office"
-  xyzwh 86.8 234.7 2000 321 171
+  xyzwh 89.9 79.1 2000 329 337
 subject 130434 "Front Office"
-  xyzwh 423.6 235.3 2000 246 169
-usecasecanvas 130562 usecase_ref 128642 // Gerer les categories
-  xyzwh 208.3 249.6 3005 64 32 label_xy 187 282
+  xyzwh 434.8 80.6 2000 308 335
+usecasecanvas 130562 usecase_ref 128642 // Categories
+  xyzwh 238.3 128.7 3005 64 32 label_xy 236 159
 end
-line 129282 --->
-  from ref 128002 z 3006 to ref 128514
-line 129410 ---> decenter_end 372
-  from ref 128002 z 3006 to ref 128386
+usecasecanvas 130818 usecase_ref 128770 // Se connecter
+  xyzwh 223.7 343.6 3005 64 32 label_xy 219 374
+end
+usecasecanvas 132098 usecase_ref 128898 // Se deconnecter
+  xyzwh 108.8 257.9 3005 64 32 label_xy 100 292
+end
+usecasecanvas 132354 usecase_ref 129026 // Gerer le contenu
+  xyzwh 326.4 256.9 3005 64 32 label_xy 312 291
+end
+usecasecanvas 133506 usecase_ref 129282 // Voir en detail une playlist
+  xyzwh 467.2 203.6 3005 64 32 label_xy 436 237
+end
+usecasecanvas 133634 usecase_ref 129410 // Voir en detail une formation
+  xyzwh 634.6 205.7 3005 64 32 label_xy 590 237
+end
 relationcanvas 129666 relation_ref 128258 // <generalisation>
   from ref 128130 z 2001 to ref 128002
   no_role_a no_role_b
   no_multiplicity_a no_multiplicity_b
 end
-line 130050 --->
-  from ref 128130 z 3006 to ref 129922
-line 130178 --->
-  from ref 128130 z 3006 to ref 129794
-line 130690 --->
-  from ref 128130 z 3006 to ref 130562
+simplerelationcanvas 132226 simplerelation_ref 128770
+  from ref 132098 z 3006 stereotype "<<include>>" xyz 159 316.5 3000 to ref 130818
+end
+simplerelationcanvas 132482 simplerelation_ref 128898
+  from ref 132354 z 3006 stereotype "<<include>>" xyz 266 316 3000 to ref 130818
+end
+simplerelationcanvas 132610 simplerelation_ref 129026
+  from ref 129922 z 3006 to ref 132354
+end
+simplerelationcanvas 132738 simplerelation_ref 129154
+  from ref 130562 z 3006 to ref 132354
+end
+simplerelationcanvas 132866 simplerelation_ref 129282
+  from ref 129794 z 3006 to ref 132354
+end
+simplerelationcanvas 133762 simplerelation_ref 129410
+  from ref 133634 z 3006 stereotype "<<include>>" xyz 627 296 3000 to ref 128386
+end
+simplerelationcanvas 133890 simplerelation_ref 129538
+  decenter_begin 531
+  from ref 133506 z 3006 stereotype "<<include>>" xyz 463 292 3000 to ref 128514
+end
+line 134018 ----
+  from ref 128002 z 3006 to ref 128514
+line 134146 ----
+  from ref 128002 z 3006 to ref 128386
+line 134274 ----
+  from ref 128130 z 3006 to ref 130818
+line 134786 ----
+  from ref 128130 z 3006 to ref 132354
+line 134914 ----
+  from ref 128130 z 3006 to ref 132098
 end

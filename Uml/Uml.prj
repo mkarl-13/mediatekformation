@@ -159,7 +159,7 @@ ${members}}
        end
     end
 
-    usecase 128386 "Gerer les formations"
+    usecase 128386 "Formations"
       
       usecasediagramsettings end
       
@@ -180,9 +180,19 @@ ${members}}
       
       activitydiagramsettings
        end
+      simplerelation 128642
+	-_->
+	  stereotype "extend"
+	  on usecase_ref 128770 // Se connecter
+      end
+
+      simplerelation 129282
+	---|>
+	  on usecase_ref 129026 // Gerer le contenu
+      end
     end
 
-    usecase 128514 "Gerer les playlists"
+    usecase 128514 "Playlists"
       
       usecasediagramsettings end
       
@@ -203,9 +213,25 @@ ${members}}
       
       activitydiagramsettings
        end
+      simplerelation 128258
+	-_->
+	  stereotype "include"
+	  on usecase_ref 128770 // Se connecter
+      end
+
+      simplerelation 128386
+	-_->
+	  stereotype "extend"
+	  on usecase_ref 128770 // Se connecter
+      end
+
+      simplerelation 129026
+	---|>
+	  on usecase_ref 129026 // Gerer le contenu
+      end
     end
 
-    usecase 128642 "Gerer les categories"
+    usecase 128642 "Categories"
       
       usecasediagramsettings end
       
@@ -226,6 +252,155 @@ ${members}}
       
       activitydiagramsettings
        end
+      simplerelation 128514
+	-_->
+	  stereotype "extend"
+	  on usecase_ref 128770 // Se connecter
+      end
+
+      simplerelation 129154
+	---|>
+	  on usecase_ref 129026 // Gerer le contenu
+      end
+    end
+
+    usecase 128770 "Se connecter"
+      
+      usecasediagramsettings end
+      
+      sequencediagramsettings end
+      
+      collaborationdiagramsettings end
+      
+      classdiagramsettings member_max_width 0 end
+      
+      classcompositediagramsettings end
+      
+      objectdiagramsettings end
+      
+      objectcompositediagramsettings end
+      
+      statediagramsettings
+       end
+      
+      activitydiagramsettings
+       end
+      simplerelation 128130
+	-_->
+	  on usecase_ref 128514 // Playlists
+      end
+    end
+
+    usecase 128898 "Se deconnecter"
+      
+      usecasediagramsettings end
+      
+      sequencediagramsettings end
+      
+      collaborationdiagramsettings end
+      
+      classdiagramsettings member_max_width 0 end
+      
+      classcompositediagramsettings end
+      
+      objectdiagramsettings end
+      
+      objectcompositediagramsettings end
+      
+      statediagramsettings
+       end
+      
+      activitydiagramsettings
+       end
+      simplerelation 128770
+	-_->
+	  stereotype "include"
+	  on usecase_ref 128770 // Se connecter
+      end
+    end
+
+    usecase 129026 "Gerer le contenu"
+      
+      usecasediagramsettings end
+      
+      sequencediagramsettings end
+      
+      collaborationdiagramsettings end
+      
+      classdiagramsettings member_max_width 0 end
+      
+      classcompositediagramsettings end
+      
+      objectdiagramsettings end
+      
+      objectcompositediagramsettings end
+      
+      statediagramsettings
+       end
+      
+      activitydiagramsettings
+       end
+      simplerelation 128898
+	-_->
+	  stereotype "include"
+	  on usecase_ref 128770 // Se connecter
+      end
+    end
+
+    usecase 129282 "Voir en detail une playlist"
+      
+      usecasediagramsettings end
+      
+      sequencediagramsettings end
+      
+      collaborationdiagramsettings end
+      
+      classdiagramsettings member_max_width 0 end
+      
+      classcompositediagramsettings end
+      
+      objectdiagramsettings end
+      
+      objectcompositediagramsettings end
+      
+      statediagramsettings
+       end
+      
+      activitydiagramsettings
+       end
+      simplerelation 129538
+	-_->
+	  stereotype "include"
+	  on usecase_ref 128258 // Voir les playlists
+      end
+    end
+
+    usecase 129410 "Voir en detail une formation"
+      
+      usecasediagramsettings end
+      
+      sequencediagramsettings end
+      
+      collaborationdiagramsettings end
+      
+      classdiagramsettings member_max_width 0 end
+      
+      classcompositediagramsettings end
+      
+      objectdiagramsettings end
+      
+      objectcompositediagramsettings end
+      
+      statediagramsettings
+       end
+      
+      activitydiagramsettings
+       end
+      simplerelation 129410
+	-_->
+	  stereotype "include"
+	  on usecase_ref 128130 // Voir les formations
+      end
     end
   end
 

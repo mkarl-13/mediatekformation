@@ -162,4 +162,13 @@ class FormationsController extends AbstractController {
                     'table' => $table
         ]);
     }
+    
+    /**
+     * Redirection de /admin vers /admin/formations
+     * @return Response
+     */
+    #[Route('/admin', name: 'admin')]
+    public function redirection(): Response {
+        return $this->redirectToRoute('admin.formations');
+    }
 }
