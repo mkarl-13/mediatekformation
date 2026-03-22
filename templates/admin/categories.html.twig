@@ -1,0 +1,86 @@
+{% extends "baseadmin.html.twig" %}
+{% block body %}
+    <table class="table table-striped" description="Liste des catégories">
+        <thead>
+            <tr>
+                <th class="text-left align-top" scope="col">
+                    categorie<br />
+                    <a href="{{ path('admin.categories.sort', {champ:'name', ordre:'ASC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true"><</a>
+                    <a href="{{ path('admin.categories.sort', {champ:'name', ordre:'DESC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true">></a>
+                    <form class="form-inline mt-1" method="POST" action="{{ path('admin.categories.findallcontain', {champ:'name'}) }}">
+                        <div class="form-group mr-1 mb-2">
+                            <input type="text" class="sm" name="recherche" 
+                                   value="{% if valeur|default and not table|default %}{{ valeur }}{% endif %}">
+                            <input type="hidden" name="_token" value="{{ csrf_token('filtre_name') }}">
+                            <button type="submit" class="btn btn-info mb-2 btn-sm">filtrer</button>
+                        </div>
+                    </form>                    
+                </th>
+                <th class="text-left align-top" scope="col">
+                    nombre de formations<br />
+                    <a href="{{ path('admin.categories.sort', {champ:'formations', ordre:'ASC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true"><</a>
+                    <a href="{{ path('admin.categories.sort', {champ:'formations', ordre:'DESC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true">></a>                 
+                </th>
+                <th class="text-left align-top" scope="col">
+                    <!-- a remplir -->
+                </th>
+                <th class="text-center align-top" scope="col">
+                    opérations
+                    <form method="post" action="{{ path('admin.categories.create') }}">
+                        <input type="hidden" name="_token" value="{{ csrf_token('create') }}">
+                        <div class="d-flex justify-content-center gap-2">
+                            <input type="text" class="sm" id="name" name="name" required/>
+                            <button type="submit" class="btn btn-info btn-sm"
+                                onclick="
+                                    var name = document.getElementById('name').value.toLowerCase();
+                                    var categories = [{% for categorie in categories %}'{{ categorie.name|lower }}',{% endfor %}];
+                                    if (categories.includes(name)) {
+                                        alert('une catégorie existe déjà avec ce nom');
+                                        return false;
+                                    }
+                                ">
+                                ajouter
+                            </button>
+                        </div>
+                    </form>
+                </th>				
+            </tr>
+        </thead>
+        <tbody>
+            <!-- boucle sur les catégories -->
+                {% for categorie in categories %}
+                    <tr class="align-middle">
+                        <td>
+                            <h5 class="text-info">
+                                {{ categorie.name }}
+                            </h5>
+                        </td>
+                        <td>
+                            <h5 class="text-info">
+                                {{ categorie.formations.count() }}
+                            </h5>
+                        </td>  
+                        <td class="text-left">
+                            &nbsp
+                        </td>            					
+                        <td class="text-center">
+                            <form method="post" action="{{ path('admin.categories.delete', { id: categorie.id }) }}">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ categorie.id) }}">
+                                <button type="submit" class="btn btn-danger btn-sm active" 
+                                        onclick="
+                                        {% if categorie.formations|length > 0 %}
+                                            alert('la catégorie doit être vide pour être supprimée');
+                                            return false;
+                                        {% else %}
+                                            return confirm('supprimer la catégorie {{ categorie.name }} ?');
+                                        {% endif %}
+                                        ">
+                                    supprimer
+                                </button> 
+                            </form>
+                        </td> 					
+                    </tr>
+                {% endfor %}	
+        </tbody>
+    </table>
+{% endblock %}

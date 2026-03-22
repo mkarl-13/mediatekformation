@@ -29,6 +29,35 @@ class CategorieRepository extends ServiceEntityRepository
     }
     
     /**
+     * Retourne toutes les catégories triées sur le nom de la catégorie
+     * @param type $champ
+     * @param type $ordre
+     * @return Categorie[]
+     */
+    public function findAllOrderByName($ordre): array {
+        return $this->createQueryBuilder('c')
+                        ->orderBy('c.name', $ordre)
+                        ->getQuery()
+                        ->getResult();
+    }
+    
+    /**
+     * Retourne toutes les catégories triées sur le nombre de formations
+     * @param type $champ
+     * @param type $ordre
+     * @return Categorie[]
+     */
+    public function findAllOrderByFormationsCount(string $ordre): array {
+        return $this->createQueryBuilder('c')
+            ->select('c, COUNT(f.id) AS HIDDEN formationCount')
+            ->leftjoin('c.formations', 'f')
+            ->groupBy('c.id')
+            ->orderBy('formationCount', $ordre)
+            ->getQuery()
+            ->getResult();
+    }
+    
+    /**
      * Retourne la liste des catégories des formations d'une playlist
      * @param type $idPlaylist
      * @return array
@@ -44,4 +73,22 @@ class CategorieRepository extends ServiceEntityRepository
                 ->getResult();
     }
     
+    /**
+     * Enregistrements dont un champ contient une valeur
+     * ou tous les enregistrements si la valeur est vide
+     * @param type $champ
+     * @param type $valeur
+     * @return Playlist[]
+     */
+    public function findByContainValue($champ, $valeur): array {
+        if ($valeur == "") {
+            return $this->findAllOrderByName('ASC');
+        }
+        return $this->createQueryBuilder('c')
+                        ->where('c.' . $champ . ' LIKE :valeur')
+                        ->setParameter('valeur', '%' . $valeur . '%')
+                        ->orderBy('c.name', 'ASC')
+                        ->getQuery()
+                        ->getResult();
+    }
 }
