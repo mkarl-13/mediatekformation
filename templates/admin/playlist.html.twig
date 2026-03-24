@@ -8,7 +8,7 @@
             <div class="d-flex flex-column">
                 <div class="d-flex align-items-center gap-2 mb-2">
                     <label for="name" class="form-label mb-0 text-nowrap">nom <span class="text-danger">*</span></label>
-                    <input type="text" id="name" name="name" class="form-control" value="{{ playlist ? playlist.name : ''}}" required>
+                    <input id="playlistName" type="text" name="name" class="form-control" value="{{ playlist ? playlist.name : ''}}" required>
                 </div>
                 <div class="d-flex align-items-center gap-2 mb-2">
                     <label for="description" class="form-label mb-0">description</label>
@@ -22,7 +22,9 @@
                     <input type="submit" value="valider" class="btn btn-primary btn-sm">
                 </div>
                 <div class="mt-5">
-                    <h3>formations de cette playlist</h3>
+                    <h3><span id="playlistFormationCount">{{playlist ? playlist.formations.count() : "" }}</span>
+                        formations dans cette playlist
+                    </h3>
                     {% for formation in playlistformations %}
                         {{ formation.title }}<br />
                     {% endfor %}

@@ -5,34 +5,34 @@
             <tr>
                 <th class="text-left align-top" scope="col">
                     formation<br />
-                    <a href="{{ path('formations.sort', {champ:'title', ordre:'ASC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true"><</a>
-                    <a href="{{ path('formations.sort', {champ:'title', ordre:'DESC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true">></a>
+                    <a id="sortByTitleAsc" href="{{ path('formations.sort', {champ:'title', ordre:'ASC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true"><</a>
+                    <a id="sortByTitleDesc" href="{{ path('formations.sort', {champ:'title', ordre:'DESC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true">></a>
                     <form class="form-inline mt-1" method="POST" action="{{ path('formations.findallcontain', {champ:'title'}) }}">
                         <div class="form-group mr-1 mb-2">
-                            <input type="text" class="sm" name="recherche" 
+                            <input id="txtFilterTitle" type="text" class="sm" name="recherche" 
                                    value="{% if valeur|default and not table|default %}{{ valeur }}{% endif %}">
                             <input type="hidden" name="_token" value="{{ csrf_token('filtre_title') }}">
-                            <button type="submit" class="btn btn-info mb-2 btn-sm">filtrer</button>
+                            <button id="btnFilterTitle" type="submit" class="btn btn-info mb-2 btn-sm">filtrer</button>
                         </div>
                     </form>                    
                 </th>
                 <th class="text-left align-top" scope="col">
                     playlist<br />
-                    <a href="{{ path('formations.sort', {table:'playlist', champ:'name', ordre:'ASC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true"><</a>
-                    <a href="{{ path('formations.sort', {table:'playlist', champ:'name', ordre:'DESC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true">></a>
+                    <a id="sortByPlaylistNameAsc" href="{{ path('formations.sort', {table:'playlist', champ:'name', ordre:'ASC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true"><</a>
+                    <a id="sortByPlaylistNameDesc" href="{{ path('formations.sort', {table:'playlist', champ:'name', ordre:'DESC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true">></a>
                     <form class="form-inline mt-1" method="POST" action="{{ path('formations.findallcontain', {champ:'name', table:'playlist'}) }}">
                         <div class="form-group mr-1 mb-2">
-                            <input type="text" class="sm" name="recherche" 
+                            <input id="txtFilterPlaylistName" type="text" class="sm" name="recherche" 
                                    value="{% if valeur|default and table|default and table=='playlist' %}{{ valeur }}{% endif %}">
                             <input type="hidden" name="_token" value="{{ csrf_token('filtre_name') }}">
-                            <button type="submit" class="btn btn-info mb-2 btn-sm">filtrer</button>
+                            <button id="btnFilterPlaylistName" type="submit" class="btn btn-info mb-2 btn-sm">filtrer</button>
                         </div>
                     </form>                    
                 </th>
                 <th class="text-left align-top" scope="col">
                     catégories
                     <form class="form-inline mt-1" method="POST" action="{{ path('formations.findallcontain', {champ:'id', table:'categories'}) }}">
-                        <select class="form-select form-select-sm" name="recherche" id="recherche" onchange="this.form.submit()">
+                        <select class="form-select form-select-sm" name="recherche" id="selectFilterCategorie" onchange="this.form.submit()">
                             <option value=""></option>
                             {% for categorie in categories %}
                                 <option 
@@ -47,8 +47,8 @@
                 </th>
                 <th class="text-center align-top" scope="col">
                     date<br />
-                    <a href="{{ path('formations.sort', {champ:'publishedAt', ordre:'ASC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true"><</a>
-                    <a href="{{ path('formations.sort', {champ:'publishedAt', ordre:'DESC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true">></a>                    
+                    <a id="sortByPublishedAtAsc" href="{{ path('formations.sort', {champ:'publishedAt', ordre:'ASC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true"><</a>
+                    <a id="sortByPublishedAtDesc" href="{{ path('formations.sort', {champ:'publishedAt', ordre:'DESC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true">></a>                    
                 </th>
                 <th class="text-center align-top" scope="col">
                     &nbsp;
@@ -59,24 +59,24 @@
             {% for formation in formations %}
                 <tr class="align-middle">
                     <td>
-                        <h5 class="text-info">
+                        <h5 id="formationTitle" class="text-info">
                             {{ formation.title }}
                         </h5>
                     </td>
-                    <td class="text-left">
+                    <td id="formationPlaylistName" class="text-left">
                         {{ formation.playlist.name }}                  
                     </td>                    
-                    <td class="text-left">
+                    <td id="formationCategories" class="text-left">
                         {% for categorie in formation.categories %}
-                            {{ categorie.name }}<br />
+                            <span id="{{ categorie.name }}">{{ categorie.name }}</span><br />
                         {% endfor %}
                     </td>                    
-                    <td class="text-center">
+                    <td id="formationPublishedAt" class="text-center">
                         {{ formation.publishedatstring }}
                     </td>
                     <td class="text-center">
                         {% if formation.miniature %}
-                            <a href="{{ path('formations.showone', {id:formation.id}) }}">
+                            <a id="btnShowFormation" href="{{ path('formations.showone', {id:formation.id}) }}">
                                 <img src="{{ formation.miniature }}" alt="Miniature de {{  formation.title }}">
                             </a>
                         {% endif %}

@@ -5,26 +5,28 @@
             <!-- emplacement de la vidéo -->
             {% if formation.videoid %}
                 <div style="width: 560px; height: 315px; float: none; clear: both; margin: 2px auto;">
-                  <embed
-                    src="https://www.youtube.com/embed/{{ formation.videoid }}" 
-                    wmode="transparent"
-                    type="video/mp4"
-                    width="100%" height="100%"
-                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture"
-                    allowfullscreen
-                    title="YouTube video player"
-                  >
+                    <iframe
+                        width="100%"
+                        height="100%"
+                        src="https://www.youtube.com/embed/{{ formation.videoid }}"
+                        title="YouTube video player"
+                        frameborder="0"
+                        allow="autoplay; clipboard-write; encrypted-media; picture-in-picture"
+                        allowfullscreen>
+                    </iframe>
                 </div>                                             
             {% endif %}
         </div>
         <div class="col">
-            {{ formation.publishedatstring }}
-            <h4 class="text-info mt-5">{{ formation.title }}</h4>
-            <strong>playlist : </strong>{{ formation.playlist.name }}<br />
+            <span id="formationPublishedAt">{{ formation.publishedatstring }}</span>
+            <h4 class="text-info mt-5"><span id="formationTitle">{{ formation.title }}</span></h4>
+            <strong>playlist : </strong><span id="formationPlaylistName">{{ formation.playlist.name }}</span><br />
             <strong>catégories : </strong>
+                <div id="formationCategories">
                 {% for categorie in formation.categories %}
-                    {{ categorie.name }}&nbsp;
+                    <span id="{{ categorie.name }}">{{ categorie.name }}</span>
                 {% endfor %}
+                </div>
             <br /><br />
             <strong>description :</strong><br />
                 {{ formation.description|nl2br }}

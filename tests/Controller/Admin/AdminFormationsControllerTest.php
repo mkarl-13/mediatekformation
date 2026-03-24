@@ -1,0 +1,240 @@
+<?php
+
+namespace mediatekformation\tests\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use App\Entity\User;
+use App\Repository\UserRepository;
+use Symfony\Component\HttpFoundation\Response;
+use DateTime;
+
+/**
+ * Description of AdminFormationsControllerTest
+ *
+ * @author Karl
+ */
+class AdminFormationsControllerTest extends WebTestCase {
+    public function getUser() : User {
+        $userRepository = static::getContainer()->get(UserRepository::class);
+        $user = $userRepository->findOneBy(["username" => "admin"]);
+        return $user;
+    }
+    
+    public function testAccesPage() {
+        $client = static::createClient();
+        $client->loginUser($this->getUser());
+        
+        $client->request("GET","/admin/formations");
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+    }
+    
+    public function testTriTitreAsc() {
+        $client = static::createClient();
+        $client->loginUser($this->getUser());
+        
+        $crawler = $client->request("GET", "/admin/formations");
+        $this->assertResponseIsSuccessful();
+
+        $lien = $crawler->filter("#sortByTitleAsc")->link();
+        $crawler = $client->click($lien);
+        $this->assertResponseIsSuccessful();
+
+        $premierTitre = $crawler->filter("#formationTitle")->first()->text();
+        $this->assertEquals("Android Studio (complément n°1) : Navigation Drawer et Fragment", $premierTitre,
+                "la première formation renvoyée n'est pas celle attendue en tri ASC");
+    }
+    
+    public function testTriTitreDesc() {
+        $client = static::createClient();
+        $client->loginUser($this->getUser());
+        
+        $crawler = $client->request("GET", "/admin/formations");
+        $this->assertResponseIsSuccessful();
+        
+        $lien = $crawler->filter("#sortByTitleDesc")->link();
+        $crawler = $client->click($lien);
+        $this->assertResponseIsSuccessful();
+
+        $premierTitre = $crawler->filter("#formationTitle")->first()->text();
+        $this->assertEquals("UML : Diagramme de paquetages", $premierTitre,
+                "la première formation renvoyée n'est pas celle attendue en tri DESC");
+    }
+    
+   public function testTriNomPlaylistAsc() {
+        $client = static::createClient();
+        $client->loginUser($this->getUser());
+        
+        $crawler = $client->request("GET", "/admin/formations");
+        $this->assertResponseIsSuccessful();
+
+        $lien = $crawler->filter("#sortByPlaylistNameAsc")->link();
+        $crawler = $client->click($lien);
+        $this->assertResponseIsSuccessful();
+
+        $premierTitre = $crawler->filter("#formationTitle")->first()->text();
+        $this->assertEquals("Eclipse n°8 : Déploiement", $premierTitre,
+                "la première formation renvoyée n'est pas celle attendue en tri ASC");
+    }
+    
+    public function testTriNomPlaylistDesc() {
+        $client = static::createClient();
+        $client->loginUser($this->getUser());
+        
+        $crawler = $client->request("GET", "/admin/formations");
+        $this->assertResponseIsSuccessful();
+        
+        $lien = $crawler->filter("#sortByPlaylistNameDesc")->link();
+        $crawler = $client->click($lien);
+        $this->assertResponseIsSuccessful();
+
+        $premierTitre = $crawler->filter("#formationTitle")->first()->text();
+        $this->assertEquals("C# : ListBox en couleur", $premierTitre,
+                "la première formation renvoyée n'est pas celle attendue en tri DESC");
+    }
+    
+    public function testTriDateAsc() {
+        $client = static::createClient();
+        $client->loginUser($this->getUser());
+        
+        $crawler = $client->request("GET", "/admin/formations");
+        $this->assertResponseIsSuccessful();
+
+        $lien = $crawler->filter("#sortByPublishedAtAsc")->link();
+        $crawler = $client->click($lien);
+        $this->assertResponseIsSuccessful();
+
+        $premierTitre = $crawler->filter("#formationTitle")->first()->text();
+        $this->assertEquals("Cours UML (1 à 7 / 33) : introduction et cas d'utilisation", $premierTitre,
+                "la première formation renvoyée n'est pas celle attendue en tri ASC");
+    }
+    
+    public function testTriDateDesc() {
+        $client = static::createClient();
+        $client->loginUser($this->getUser());
+        
+        $crawler = $client->request("GET", "/admin/formations");
+        $this->assertResponseIsSuccessful();
+
+        $lien = $crawler->filter("#sortByPublishedAtDesc")->link();
+        $crawler = $client->click($lien);
+        $this->assertResponseIsSuccessful();
+
+        $premierTitre = $crawler->filter("#formationTitle")->first()->text();
+        $this->assertEquals("Cours Informatique embarquée", $premierTitre,
+                "la première formation renvoyée n'est pas celle attendue en tri DESC");
+    }
+    
+    public function testFiltreParTitre() {
+        $client = static::createClient();
+        $client->loginUser($this->getUser());
+        
+        $crawler = $client->request("GET", "/admin/formations");
+        $this->assertResponseIsSuccessful();
+
+        $form = $crawler->filter("#btnFilterTitle")->form();
+        $form["recherche"]->setValue("python");
+        $crawler = $client->submit($form);
+        $this->assertResponseIsSuccessful();
+
+        $nbLignes = $crawler->filter('table tbody tr')->count();
+        $this->assertEquals(19, $nbLignes,
+                "le nombre de formations filtrées ne correspond pas au nombre attendu");
+
+        $premierTitre = $crawler->filter("#formationTitle")->first()->text();
+        $this->assertEquals("Python n°18 : Décorateur singleton", $premierTitre,
+                "la première formation filtrée ne correspond pas à celle attendue");
+    }
+    
+    public function testFiltreParPlaylist() {
+        $client = static::createClient();
+        $client->loginUser($this->getUser());
+        
+        $crawler = $client->request("GET", "/admin/formations");
+        $this->assertResponseIsSuccessful();
+
+        $form = $crawler->filter("#btnFilterPlaylistName")->form();
+        $form["recherche"]->setValue("Eclipse");
+        $crawler = $client->submit($form);
+        $this->assertResponseIsSuccessful();
+
+        $nbLignes = $crawler->filter('table tbody tr')->count();
+        $this->assertEquals(7, $nbLignes,
+                "le nombre de formations filtrées ne correspond pas au nombre attendu");
+
+        $premierTitre = $crawler->filter("#formationTitle")->first()->text();
+        $this->assertEquals("Eclipse n°2 : rétroconception avec ObjectAid", $premierTitre,
+                "la première formation filtrée ne correspond pas à celle attendue");
+    }
+
+    public function testFiltreParCategorie() {
+        $client = static::createClient();
+        $userRepository = static::getContainer()->get(UserRepository::class);
+        $user = $userRepository->findOneBy(["username" => "admin"]);
+        $client->loginUser($user);
+
+        $crawler = $client->request("GET", "/admin/formations");
+        $this->assertResponseIsSuccessful();
+
+        $form = $crawler->filter("#selectFilterCategorie")->closest("form")->form();
+        $form["recherche"]->setValue("1");
+        $crawler = $client->submit($form);
+        $this->assertResponseIsSuccessful();
+
+        $nbLignes = $crawler->filter("table tbody tr")->count();
+        $this->assertEquals(16, $nbLignes,
+                "le nombre de formations filtrées par catégorie ne correspond pas au nombre attendu");
+
+        $premierTitre = $crawler->filter("#formationTitle")->first()->text();
+        $this->assertEquals("Cours Informatique embarquée", $premierTitre,
+                "la première formation filtrée par catégorie ne correspond pas à celle attendue");
+    }
+
+    public function testLienVersFormation() {
+        $client = static::createClient();
+        $client->loginUser($this->getUser());
+
+        $crawler = $client->request("GET", "/admin/formations");
+        $this->assertResponseIsSuccessful();
+
+        $premierTitre = $crawler->filter("#formationTitle")->first()->text();
+        $premierePlaylist = $crawler->filter("#formationPlaylistName")->first()->text();
+        $premiereDate = $crawler->filter("#formationPublishedAt")->first()->text();
+
+        $lien = $crawler->filter("#btnShowFormation")->first()->link();
+        $crawler = $client->click($lien);
+
+        $this->assertResponseIsSuccessful();
+        $this->assertEquals(trim($premierTitre), trim($crawler->filter("#formationTitle")->attr("value")),
+                "le titre de la formation ne correspond pas");
+
+        $date = new DateTime(trim($crawler->filter("#formationPublishedAt")->attr("value")));
+        $this->assertEquals(
+                trim($premiereDate),
+                $date->format("d/m/Y"),
+                "la date de la formation ne correspond pas"
+        );
+
+        $this->assertEquals(trim($premierePlaylist), trim($crawler->filter("#formationPlaylistName")->text()),
+                "la playlist de la formation ne correspond pas");
+    }
+    
+    public function testLienCreerFormation() {
+        $client = static::createClient();
+        $client->loginUser($this->getUser());
+        $crawler = $client->request("GET", "/admin/formations");
+        $this->assertResponseIsSuccessful();
+
+        // Clique sur le bouton pour créer une nouvelle formation
+        $lien = $crawler->filter("#btnNewFormation")->link();
+        $crawler = $client->click($lien);
+        $this->assertResponseIsSuccessful();
+
+        // Vérifie que les champs sont vides
+        $this->assertEquals("", trim($crawler->filter("#formationTitle")->attr("value")),
+                "le champ titre devrait être vide");
+        $this->assertEquals("", trim($crawler->filter("#formationPublishedAt")->attr("value")),
+                "le champ date devrait être vide");
+        $this->assertCount(0, $crawler->filter("#formationPlaylistName"),
+                "aucune playlist ne devrait être sélectionnée");
+    }
+}

@@ -5,21 +5,21 @@
             <tr>
                 <th class="text-left align-top" scope="col">
                     categorie<br />
-                    <a href="{{ path('admin.categories.sort', {champ:'name', ordre:'ASC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true"><</a>
-                    <a href="{{ path('admin.categories.sort', {champ:'name', ordre:'DESC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true">></a>
+                    <a id="sortByNameAsc" href="{{ path('admin.categories.sort', {champ:'name', ordre:'ASC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true"><</a>
+                    <a id="sortByNameDesc" href="{{ path('admin.categories.sort', {champ:'name', ordre:'DESC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true">></a>
                     <form class="form-inline mt-1" method="POST" action="{{ path('admin.categories.findallcontain', {champ:'name'}) }}">
                         <div class="form-group mr-1 mb-2">
                             <input type="text" class="sm" name="recherche" 
                                    value="{% if valeur|default and not table|default %}{{ valeur }}{% endif %}">
                             <input type="hidden" name="_token" value="{{ csrf_token('filtre_name') }}">
-                            <button type="submit" class="btn btn-info mb-2 btn-sm">filtrer</button>
+                            <button id="btnFilterName" type="submit" class="btn btn-info mb-2 btn-sm">filtrer</button>
                         </div>
                     </form>                    
                 </th>
                 <th class="text-left align-top" scope="col">
                     nombre de formations<br />
-                    <a href="{{ path('admin.categories.sort', {champ:'formations', ordre:'ASC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true"><</a>
-                    <a href="{{ path('admin.categories.sort', {champ:'formations', ordre:'DESC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true">></a>                 
+                    <a id="sortByFormationCountAsc" href="{{ path('admin.categories.sort', {champ:'formations', ordre:'ASC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true"><</a>
+                    <a id="sortByFormationCountDesc" href="{{ path('admin.categories.sort', {champ:'formations', ordre:'DESC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true">></a>                 
                 </th>
                 <th class="text-left align-top" scope="col">
                     <!-- a remplir -->
@@ -51,12 +51,12 @@
                 {% for categorie in categories %}
                     <tr class="align-middle">
                         <td>
-                            <h5 class="text-info">
+                            <h5 id="categorieName" class="text-info">
                                 {{ categorie.name }}
                             </h5>
                         </td>
                         <td>
-                            <h5 class="text-info">
+                            <h5 id="categorieFormationCount" class="text-info">
                                 {{ categorie.formations.count() }}
                             </h5>
                         </td>  

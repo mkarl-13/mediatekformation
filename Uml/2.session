@@ -1,0 +1,20 @@
+window_sizes 1920 1051 450 1464 865 128
+
+diagrams
+  active  usecasediagram_ref 128130 // UseCases
+    1464 865 160 A4 42 0
+end
+show_stereotypes
+selected usecase_ref 129026 // Gerer le contenu
+open
+  class_ref 128258 // Administrateur
+  usecase_ref 128386 // Formations
+  usecase_ref 128514 // Playlists
+  usecase_ref 128642 // Categories
+  usecase_ref 128770 // Se connecter
+  usecase_ref 128898 // Se deconnecter
+  usecase_ref 129026 // Gerer le contenu
+  usecase_ref 129282 // Voir en detail une playlist
+  usecase_ref 129410 // Voir en detail une formation
+end
+end
