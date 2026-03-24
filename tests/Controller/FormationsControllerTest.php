@@ -1,22 +1,29 @@
 <?php
 
-namespace mediatekformation\tests\Controller;
+namespace App\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Description of FormationsControllerTest
+ * Tests du contrôleur des formations
  *
  * @author Karl
  */
 class FormationsControllerTest extends WebTestCase {
+
+    /**
+     * Vérifie que la page des formations est accessible
+     */
     public function testAccesPage() {
         $client = static::createClient();
         $client->request("GET","/formations");
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
     }
-    
+
+    /**
+     * Vérifie le tri des formations par titre en ordre croissant
+     */
     public function testTriTitreAsc() {
         $client = static::createClient();
         $crawler = $client->request("GET", "/formations");
@@ -30,13 +37,15 @@ class FormationsControllerTest extends WebTestCase {
         $this->assertEquals("Android Studio (complément n°1) : Navigation Drawer et Fragment", $premierTitre,
                 "la première formation renvoyée n'est pas celle attendue en tri ASC");
     }
-    
+
+    /**
+     * Vérifie le tri des formations par titre en ordre décroissant
+     */
     public function testTriTitreDesc() {
         $client = static::createClient();
         $crawler = $client->request("GET", "/formations");
         $this->assertResponseIsSuccessful();
 
-        
         $lien = $crawler->filter("#sortByTitleDesc")->link();
         $crawler = $client->click($lien);
         $this->assertResponseIsSuccessful();
@@ -45,7 +54,10 @@ class FormationsControllerTest extends WebTestCase {
         $this->assertEquals("UML : Diagramme de paquetages", $premierTitre,
                 "la première formation renvoyée n'est pas celle attendue en tri DESC");
     }
-    
+
+    /**
+     * Vérifie le tri des formations par nom de playlist en ordre croissant
+     */
    public function testTriNomPlaylistAsc() {
         $client = static::createClient();
         $crawler = $client->request("GET", "/formations");
@@ -59,13 +71,15 @@ class FormationsControllerTest extends WebTestCase {
         $this->assertEquals("Eclipse n°8 : Déploiement", $premierTitre,
                 "la première formation renvoyée n'est pas celle attendue en tri ASC");
     }
-    
+
+    /**
+     * Vérifie le tri des formations par nom de playlist en ordre décroissant
+     */
     public function testTriNomPlaylistDesc() {
         $client = static::createClient();
         $crawler = $client->request("GET", "/formations");
         $this->assertResponseIsSuccessful();
 
-        
         $lien = $crawler->filter("#sortByPlaylistNameDesc")->link();
         $crawler = $client->click($lien);
         $this->assertResponseIsSuccessful();
@@ -74,7 +88,10 @@ class FormationsControllerTest extends WebTestCase {
         $this->assertEquals("C# : ListBox en couleur", $premierTitre,
                 "la première formation renvoyée n'est pas celle attendue en tri DESC");
     }
-    
+
+    /**
+     * Vérifie le tri des formations par date en ordre croissant
+     */
     public function testTriDateAsc() {
         $client = static::createClient();
         $crawler = $client->request("GET", "/formations");
@@ -88,13 +105,15 @@ class FormationsControllerTest extends WebTestCase {
         $this->assertEquals("Cours UML (1 à 7 / 33) : introduction et cas d'utilisation", $premierTitre,
                 "la première formation renvoyée n'est pas celle attendue en tri ASC");
     }
-    
+
+    /**
+     * Vérifie le tri des formations par date en ordre décroissant
+     */
     public function testTriDateDesc() {
         $client = static::createClient();
         $crawler = $client->request("GET", "/formations");
         $this->assertResponseIsSuccessful();
 
-        
         $lien = $crawler->filter("#sortByPublishedAtDesc")->link();
         $crawler = $client->click($lien);
         $this->assertResponseIsSuccessful();
@@ -103,7 +122,10 @@ class FormationsControllerTest extends WebTestCase {
         $this->assertEquals("Cours Informatique embarquée", $premierTitre,
                 "la première formation renvoyée n'est pas celle attendue en tri DESC");
     }
-    
+
+    /**
+     * Vérifie le filtre des formations par titre
+     */
     public function testFiltreParTitre() {
         $client = static::createClient();
         $crawler = $client->request("GET", "/formations");
@@ -122,7 +144,10 @@ class FormationsControllerTest extends WebTestCase {
         $this->assertEquals("Python n°18 : Décorateur singleton", $premierTitre,
                 "la première formation filtrée ne correspond pas à celle attendue");
     }
-    
+
+    /**
+     * Vérifie le filtre des formations par nom de playlist
+     */
     public function testFiltreParPlaylist() {
         $client = static::createClient();
         $crawler = $client->request("GET", "/formations");
@@ -141,7 +166,10 @@ class FormationsControllerTest extends WebTestCase {
         $this->assertEquals("Eclipse n°2 : rétroconception avec ObjectAid", $premierTitre,
                 "la première formation filtrée ne correspond pas à celle attendue");
     }
-    
+
+    /**
+     * Vérifie le filtre des formations par catégorie
+     */
     public function testFiltreParCategorie() {
         $client = static::createClient();
         $crawler = $client->request("GET", "/formations");
@@ -160,12 +188,15 @@ class FormationsControllerTest extends WebTestCase {
         $this->assertEquals("Cours Informatique embarquée", $premierTitre,
                 "la première formation filtrée par catégorie ne correspond pas à celle attendue");
     }
-    
+
+    /**
+     * Vérifie que le lien vers le détail d'une formation fonctionne correctement
+     */
     public function testLienVersFormation() {
         $client = static::createClient();
         $crawler = $client->request("GET", "/formations");
         $this->assertResponseIsSuccessful();
-        
+
         $premierTitre = $crawler->filter("#formationTitle")->first()->text();
         $premierePlaylist = $crawler->filter("#formationPlaylistName")->first()->text();
         $premiereDate = $crawler->filter("#formationPublishedAt")->first()->text();

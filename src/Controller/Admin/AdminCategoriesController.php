@@ -4,40 +4,45 @@ namespace App\Controller\Admin;
 
 use App\Repository\CategorieRepository;
 use App\Repository\FormationRepository;
-use App\Repository\PlaylistRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\Categorie;
 
 /**
- * Description of PlaylistsController
+ * Controleur d'administration des catégories
  *
- * @author emds
+ * @author Karl
  */
-class CategoriesController extends AbstractController {
-    
+class AdminCategoriesController extends AbstractController {
+
     private const CATEGORIES_TEMPLATE = "admin/categories.html.twig";
 
     /**
-     *
      * @var FormationRepository
      */
     private $formationRepository;
 
     /**
-     *
      * @var CategorieRepository
      */
     private $categorieRepository;
 
+    /**
+     * @param CategorieRepository $categorieRepository
+     * @param FormationRepository $formationRespository
+     */
     public function __construct(CategorieRepository $categorieRepository,
             FormationRepository $formationRespository) {
         $this->categorieRepository = $categorieRepository;
         $this->formationRepository = $formationRespository;
     }
 
+    /**
+     * Affiche la liste de toutes les catégories triées par nom
+     * @return Response
+     */
     #[Route('/admin/categories', name: 'admin.categories')]
     public function index(): Response {
         $categories = $this->categorieRepository->findAllOrderByName("ASC");
@@ -46,6 +51,12 @@ class CategoriesController extends AbstractController {
         ]);
     }
 
+    /**
+     * Affiche les catégories triées sur un champ
+     * @param type $champ
+     * @param type $ordre
+     * @return Response
+     */
     #[Route('/admin/categories/tri/{champ}/{ordre}', name: 'admin.categories.sort')]
     public function sort($champ, $ordre): Response {
         switch ($champ) {
@@ -64,6 +75,12 @@ class CategoriesController extends AbstractController {
         ]);
     }
 
+    /**
+     * Affiche les catégories dont un champ contient la valeur recherchée
+     * @param type $champ
+     * @param Request $request
+     * @return Response
+     */
     #[Route('/admin/categories/recherche/{champ}', name: 'admin.categories.findallcontain')]
     public function findAllContain($champ, Request $request): Response {
         $valeur = $request->get("recherche");
@@ -74,6 +91,11 @@ class CategoriesController extends AbstractController {
         ]);
     }
 
+    /**
+     * Crée une nouvelle catégorie si le nom n'existe pas déjà
+     * @param Request $request
+     * @return Response
+     */
     #[Route("/admin/categories/categorie/create", name: "admin.categories.create", methods: ["POST"])]
     public function create(Request $request): Response {
         $name = $request->request->get("name");
@@ -87,7 +109,13 @@ class CategoriesController extends AbstractController {
         }
         return $this->redirectToRoute('admin.categories');
     }
-    
+
+    /**
+     * Supprime une catégorie si elle ne contient aucune formation
+     * @param int $id
+     * @param Request $request
+     * @return Response
+     */
     #[Route('/admin/categories/categorie/{id}/delete', name: 'admin.categories.delete', methods: ['POST'])]
     public function delete(int $id, Request $request): Response {
         $categorie = $this->categorieRepository->find($id);

@@ -9,6 +9,11 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * Entité représentant une formation vidéo
+ *
+ * @author emds
+ */
 #[ORM\Entity(repositoryClass: FormationRepository::class)]
 class Formation
 
@@ -17,7 +22,7 @@ class Formation
      * Début de chemin vers les images
      */
     private const CHEMIN_IMAGE = "https://i.ytimg.com/vi/";
-        
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -45,21 +50,34 @@ class Formation
     #[ORM\ManyToMany(targetEntity: Categorie::class, inversedBy: 'formations')]
     private Collection $categories;
 
+    /**
+     * Initialise la collection de catégories
+     */
     public function __construct()
     {
         $this->categories = new ArrayCollection();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return \DateTimeInterface|null
+     */
     public function getPublishedAt(): ?\DateTimeInterface
     {
         return $this->publishedAt;
     }
 
+    /**
+     * @param \DateTimeInterface|null $publishedAt
+     * @return static
+     */
     public function setPublishedAt(?\DateTimeInterface $publishedAt): static
     {
         $this->publishedAt = $publishedAt;
@@ -67,18 +85,29 @@ class Formation
         return $this;
     }
 
+    /**
+     * Retourne la date de publication au format j/m/Y
+     * @return string
+     */
     public function getPublishedAtString(): string {
         if($this->publishedAt == null){
             return "";
         }
         return $this->publishedAt->format('d/m/Y');
     }
-    
+
+    /**
+     * @return string|null
+     */
     public function getTitle(): ?string
     {
         return $this->title;
     }
 
+    /**
+     * @param string|null $title
+     * @return static
+     */
     public function setTitle(?string $title): static
     {
         $this->title = $title;
@@ -86,11 +115,18 @@ class Formation
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
+    /**
+     * @param string|null $description
+     * @return static
+     */
     public function setDescription(?string $description): static
     {
         $this->description = $description;
@@ -98,11 +134,18 @@ class Formation
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getVideoId(): ?string
     {
         return $this->videoId;
     }
 
+    /**
+     * @param string|null $videoId
+     * @return static
+     */
     public function setVideoId(?string $videoId): static
     {
         $this->videoId = $videoId;
@@ -110,21 +153,36 @@ class Formation
         return $this;
     }
 
+    /**
+     * Retourne l'URL de la miniature de la vidéo YouTube
+     * @return string|null
+     */
     public function getMiniature(): ?string
     {
         return self::CHEMIN_IMAGE.$this->videoId."/default.jpg";
     }
 
+    /**
+     * Retourne l'URL de l'image haute qualité de la vidéo YouTube
+     * @return string|null
+     */
     public function getPicture(): ?string
     {
         return self::CHEMIN_IMAGE.$this->videoId."/hqdefault.jpg";
     }
-    
+
+    /**
+     * @return Playlist|null
+     */
     public function getPlaylist(): ?playlist
     {
         return $this->playlist;
     }
 
+    /**
+     * @param Playlist|null $playlist
+     * @return static
+     */
     public function setPlaylist(?Playlist $playlist): static
     {
         $this->playlist = $playlist;
@@ -140,6 +198,10 @@ class Formation
         return $this->categories;
     }
 
+    /**
+     * @param Categorie $category
+     * @return static
+     */
     public function addCategory(Categorie $category): static
     {
         if (!$this->categories->contains($category)) {
@@ -149,6 +211,10 @@ class Formation
         return $this;
     }
 
+    /**
+     * @param Categorie $category
+     * @return static
+     */
     public function removeCategory(Categorie $category): static
     {
         $this->categories->removeElement($category);

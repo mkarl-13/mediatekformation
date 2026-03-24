@@ -7,30 +7,43 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Accès aux données des catégories
+ *
  * @extends ServiceEntityRepository<Categorie>
+ * @author Karl
  */
 class CategorieRepository extends ServiceEntityRepository
 {
+    /**
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Categorie::class);
     }
 
+    /**
+     * Persiste et enregistre une catégorie en base de données
+     * @param Categorie $entity
+     */
     public function add(Categorie $entity): void
     {
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();
     }
 
+    /**
+     * Supprime une catégorie de la base de données
+     * @param Categorie $entity
+     */
     public function remove(Categorie $entity): void
     {
         $this->getEntityManager()->remove($entity);
         $this->getEntityManager()->flush();
     }
-    
+
     /**
      * Retourne toutes les catégories triées sur le nom de la catégorie
-     * @param type $champ
      * @param type $ordre
      * @return Categorie[]
      */
@@ -40,11 +53,10 @@ class CategorieRepository extends ServiceEntityRepository
                         ->getQuery()
                         ->getResult();
     }
-    
+
     /**
      * Retourne toutes les catégories triées sur le nombre de formations
-     * @param type $champ
-     * @param type $ordre
+     * @param string $ordre
      * @return Categorie[]
      */
     public function findAllOrderByFormationsCount(string $ordre): array {
@@ -56,11 +68,11 @@ class CategorieRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-    
+
     /**
      * Retourne la liste des catégories des formations d'une playlist
      * @param type $idPlaylist
-     * @return array
+     * @return Categorie[]
      */
     public function findAllForOnePlaylist($idPlaylist): array{
         return $this->createQueryBuilder('c')
@@ -72,13 +84,13 @@ class CategorieRepository extends ServiceEntityRepository
                 ->getQuery()
                 ->getResult();
     }
-    
+
     /**
      * Enregistrements dont un champ contient une valeur
      * ou tous les enregistrements si la valeur est vide
      * @param type $champ
      * @param type $valeur
-     * @return Playlist[]
+     * @return Categorie[]
      */
     public function findByContainValue($champ, $valeur): array {
         if ($valeur == "") {

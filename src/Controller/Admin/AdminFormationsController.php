@@ -11,38 +11,44 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Description of FormationsController
+ * Controleur d'administration des formations
  *
  * @author Karl
  */
-class FormationsController extends AbstractController {
-    
+class AdminFormationsController extends AbstractController {
+
     private const FORMATIONS_TEMPLATE = "admin/formations.html.twig";
-    
+
     /**
-     *
      * @var FormationRepository
      */
     private $formationRepository;
 
     /**
-     *
      * @var CategorieRepository
      */
     private $categorieRepository;
-    
+
     /**
-     *
-     * @var type
+     * @var PlaylistRepository
      */
     private $playlistRepository;
 
+    /**
+     * @param FormationRepository $formationRepository
+     * @param CategorieRepository $categorieRepository
+     * @param PlaylistRepository $playlistRepository
+     */
     public function __construct(FormationRepository $formationRepository, CategorieRepository $categorieRepository, PlaylistRepository $playlistRepository) {
         $this->formationRepository = $formationRepository;
         $this->categorieRepository = $categorieRepository;
         $this->playlistRepository = $playlistRepository;
     }
-    
+
+    /**
+     * Affiche la liste de toutes les formations (espace admin)
+     * @return Response
+     */
     #[Route('/admin/formations', name: 'admin.formations')]
     public function index(): Response {
         $formations = $this->formationRepository->findAll();
@@ -52,9 +58,15 @@ class FormationsController extends AbstractController {
                     'categories' => $categories
         ]);
     }
-    
-    
-    #[Route('/admin/formations/{id}/delete', name: 'admin_formations_delete', methods: ['POST'])]
+
+    /**
+     * Supprime une formation après vérification du token CSRF
+     * @param int $id
+     * @param Request $request
+     * @param FormationRepository $formationRepository
+     * @return Response
+     */
+    #[Route('/admin/formations/{id}/delete', name: 'admin.formations.delete', methods: ['POST'])]
     public function delete(int $id, Request $request, FormationRepository $formationRepository): Response
     {
         $formation = $formationRepository->find($id);
@@ -62,20 +74,25 @@ class FormationsController extends AbstractController {
         if (!$formation) {
             throw $this->createNotFoundException('Formation introuvable.');
         }
-        
+
         if ($this->isCsrfTokenValid('delete' . $id, $request->request->get('_token'))) {
             $formationRepository->remove($formation);
         }
-        
+
         return $this->redirectToRoute('admin.formations');
     }
-    
-    #[Route('/admin/formations/formation/{id}', name: 'admin_formations_showone')]
+
+    /**
+     * Affiche le formulaire d'une formation (création ou modification)
+     * @param int|null $id
+     * @return Response
+     */
+    #[Route('/admin/formations/formation/{id}', name: 'admin.formations.showone')]
     public function showOne(?int $id = null): Response {
         $formation = $id ? $this->formationRepository->find($id) : null;
         $categories = $this->categorieRepository->findAll();
         $playlists = $this->playlistRepository->findAll();
-        
+
         return $this->render("admin/formation.html.twig", [
                     'formation' => $formation,
                     'categories' => $categories,
@@ -83,7 +100,16 @@ class FormationsController extends AbstractController {
         ]);
     }
 
-    #[Route('/admin/formations/{id}/edit', name: 'admin_formations_update', methods: ['POST'])]
+    /**
+     * Met à jour une formation après vérification du token CSRF
+     * @param int $id
+     * @param Request $request
+     * @param FormationRepository $formationRepository
+     * @param CategorieRepository $categorieRepository
+     * @param PlaylistRepository $playlistRepository
+     * @return Response
+     */
+    #[Route('/admin/formations/{id}/edit', name: 'admin.formations.update', methods: ['POST'])]
     public function update(int $id, Request $request, FormationRepository $formationRepository, CategorieRepository $categorieRepository, PlaylistRepository $playlistRepository): Response
     {
         $formation = $formationRepository->find($id);
@@ -96,14 +122,14 @@ class FormationsController extends AbstractController {
         $formation->setDescription($request->request->get('description'));
         $formation->setVideoId($request->request->get('videoId'));
         $formation->setPublishedAt(new \DateTime($request->request->get('publishedAt')));
-                
+
         $playlist = $playlistRepository->find($request->request->get('playlist'));
         $formation->setPlaylist($playlist);
 
         foreach ($formation->getCategories() as $categorie) {
             $formation->removeCategory($categorie);
         }
-        
+
         foreach ($request->request->all('categories') as $categorieId) {
             $categorie = $categorieRepository->find($categorieId);
             $formation->addCategory($categorie);
@@ -115,8 +141,13 @@ class FormationsController extends AbstractController {
 
         return $this->redirectToRoute('admin.formations');
     }
-    
-    #[Route('/admin/formations/create', name: 'admin_formations_create', methods: ['POST'])]
+
+    /**
+     * Crée une nouvelle formation après vérification du token CSRF
+     * @param Request $request
+     * @return Response
+     */
+    #[Route('/admin/formations/create', name: 'admin.formations.create', methods: ['POST'])]
     public function create(Request $request): Response {
         $formation = new Formation();
 
@@ -136,11 +167,18 @@ class FormationsController extends AbstractController {
         if ($this->isCsrfTokenValid('create', $request->request->get('_token'))) {
             $this->formationRepository->add($formation);
         }
-        
+
         return $this->redirectToRoute('admin.formations');
     }
-    
-    #[Route('admin/formations/tri/{champ}/{ordre}/{table}', name: 'admin_formations_sort')]
+
+    /**
+     * Affiche les formations triées sur un champ (espace admin)
+     * @param type $champ
+     * @param type $ordre
+     * @param type $table
+     * @return Response
+     */
+    #[Route('admin/formations/tri/{champ}/{ordre}/{table}', name: 'admin.formations.sort')]
     public function sort($champ, $ordre, $table = ""): Response {
         $formations = $this->formationRepository->findAllOrderBy($champ, $ordre, $table);
         $categories = $this->categorieRepository->findAll();
@@ -150,7 +188,14 @@ class FormationsController extends AbstractController {
         ]);
     }
 
-    #[Route('admin/formations/recherche/{champ}/{table}', name: 'admin_formations_findallcontain')]
+    /**
+     * Affiche les formations dont un champ contient la valeur recherchée (espace admin)
+     * @param type $champ
+     * @param Request $request
+     * @param type $table
+     * @return Response
+     */
+    #[Route('admin/formations/recherche/{champ}/{table}', name: 'admin.formations.findallcontain')]
     public function findAllContain($champ, Request $request, $table = ""): Response {
         $valeur = $request->get("recherche");
         $formations = $this->formationRepository->findByContainValue($champ, $valeur, $table);
@@ -162,7 +207,7 @@ class FormationsController extends AbstractController {
                     'table' => $table
         ]);
     }
-    
+
     /**
      * Redirection de /admin vers /admin/formations
      * @return Response

@@ -7,21 +7,35 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Accès aux données des formations
+ *
  * @extends ServiceEntityRepository<Formation>
+ * @author Karl
  */
 class FormationRepository extends ServiceEntityRepository
 {
+    /**
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Formation::class);
     }
 
+    /**
+     * Persiste et enregistre une formation en base de données
+     * @param Formation $entity
+     */
     public function add(Formation $entity): void
     {
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();
     }
 
+    /**
+     * Supprime une formation de la base de données
+     * @param Formation $entity
+     */
     public function remove(Formation $entity): void
     {
         $this->getEntityManager()->remove($entity);
@@ -79,7 +93,7 @@ class FormationRepository extends ServiceEntityRepository
                     ->getResult();
         }
     }
-    
+
     /**
      * Retourne les n formations les plus récentes
      * @param type $nb
@@ -92,7 +106,7 @@ class FormationRepository extends ServiceEntityRepository
                 ->getQuery()
                 ->getResult();
     }
-    
+
     /**
      * Retourne la liste des formations d'une playlist
      * @param type $idPlaylist
@@ -107,5 +121,5 @@ class FormationRepository extends ServiceEntityRepository
                 ->getQuery()
                 ->getResult();
     }
-    
+
 }

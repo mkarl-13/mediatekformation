@@ -1,6 +1,6 @@
 <?php
 
-namespace mediatekformation\tests\Controller;
+namespace App\Tests\Controller\Admin;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Entity\User;
@@ -9,29 +9,40 @@ use Symfony\Component\HttpFoundation\Response;
 use DateTime;
 
 /**
- * Description of AdminFormationsControllerTest
+ * Tests du contrôleur d'administration des formations
  *
  * @author Karl
  */
 class AdminFormationsControllerTest extends WebTestCase {
+
+    /**
+     * Retourne l'utilisateur admin pour les tests authentifiés
+     * @return User
+     */
     public function getUser() : User {
         $userRepository = static::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(["username" => "admin"]);
         return $user;
     }
-    
+
+    /**
+     * Vérifie que la page admin des formations est accessible
+     */
     public function testAccesPage() {
         $client = static::createClient();
         $client->loginUser($this->getUser());
-        
+
         $client->request("GET","/admin/formations");
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
     }
-    
+
+    /**
+     * Vérifie le tri des formations par titre en ordre croissant (admin)
+     */
     public function testTriTitreAsc() {
         $client = static::createClient();
         $client->loginUser($this->getUser());
-        
+
         $crawler = $client->request("GET", "/admin/formations");
         $this->assertResponseIsSuccessful();
 
@@ -43,14 +54,17 @@ class AdminFormationsControllerTest extends WebTestCase {
         $this->assertEquals("Android Studio (complément n°1) : Navigation Drawer et Fragment", $premierTitre,
                 "la première formation renvoyée n'est pas celle attendue en tri ASC");
     }
-    
+
+    /**
+     * Vérifie le tri des formations par titre en ordre décroissant (admin)
+     */
     public function testTriTitreDesc() {
         $client = static::createClient();
         $client->loginUser($this->getUser());
-        
+
         $crawler = $client->request("GET", "/admin/formations");
         $this->assertResponseIsSuccessful();
-        
+
         $lien = $crawler->filter("#sortByTitleDesc")->link();
         $crawler = $client->click($lien);
         $this->assertResponseIsSuccessful();
@@ -59,11 +73,14 @@ class AdminFormationsControllerTest extends WebTestCase {
         $this->assertEquals("UML : Diagramme de paquetages", $premierTitre,
                 "la première formation renvoyée n'est pas celle attendue en tri DESC");
     }
-    
+
+    /**
+     * Vérifie le tri des formations par nom de playlist en ordre croissant (admin)
+     */
    public function testTriNomPlaylistAsc() {
         $client = static::createClient();
         $client->loginUser($this->getUser());
-        
+
         $crawler = $client->request("GET", "/admin/formations");
         $this->assertResponseIsSuccessful();
 
@@ -75,14 +92,17 @@ class AdminFormationsControllerTest extends WebTestCase {
         $this->assertEquals("Eclipse n°8 : Déploiement", $premierTitre,
                 "la première formation renvoyée n'est pas celle attendue en tri ASC");
     }
-    
+
+    /**
+     * Vérifie le tri des formations par nom de playlist en ordre décroissant (admin)
+     */
     public function testTriNomPlaylistDesc() {
         $client = static::createClient();
         $client->loginUser($this->getUser());
-        
+
         $crawler = $client->request("GET", "/admin/formations");
         $this->assertResponseIsSuccessful();
-        
+
         $lien = $crawler->filter("#sortByPlaylistNameDesc")->link();
         $crawler = $client->click($lien);
         $this->assertResponseIsSuccessful();
@@ -91,11 +111,14 @@ class AdminFormationsControllerTest extends WebTestCase {
         $this->assertEquals("C# : ListBox en couleur", $premierTitre,
                 "la première formation renvoyée n'est pas celle attendue en tri DESC");
     }
-    
+
+    /**
+     * Vérifie le tri des formations par date en ordre croissant (admin)
+     */
     public function testTriDateAsc() {
         $client = static::createClient();
         $client->loginUser($this->getUser());
-        
+
         $crawler = $client->request("GET", "/admin/formations");
         $this->assertResponseIsSuccessful();
 
@@ -107,11 +130,14 @@ class AdminFormationsControllerTest extends WebTestCase {
         $this->assertEquals("Cours UML (1 à 7 / 33) : introduction et cas d'utilisation", $premierTitre,
                 "la première formation renvoyée n'est pas celle attendue en tri ASC");
     }
-    
+
+    /**
+     * Vérifie le tri des formations par date en ordre décroissant (admin)
+     */
     public function testTriDateDesc() {
         $client = static::createClient();
         $client->loginUser($this->getUser());
-        
+
         $crawler = $client->request("GET", "/admin/formations");
         $this->assertResponseIsSuccessful();
 
@@ -123,11 +149,14 @@ class AdminFormationsControllerTest extends WebTestCase {
         $this->assertEquals("Cours Informatique embarquée", $premierTitre,
                 "la première formation renvoyée n'est pas celle attendue en tri DESC");
     }
-    
+
+    /**
+     * Vérifie le filtre des formations par titre (admin)
+     */
     public function testFiltreParTitre() {
         $client = static::createClient();
         $client->loginUser($this->getUser());
-        
+
         $crawler = $client->request("GET", "/admin/formations");
         $this->assertResponseIsSuccessful();
 
@@ -144,11 +173,14 @@ class AdminFormationsControllerTest extends WebTestCase {
         $this->assertEquals("Python n°18 : Décorateur singleton", $premierTitre,
                 "la première formation filtrée ne correspond pas à celle attendue");
     }
-    
+
+    /**
+     * Vérifie le filtre des formations par nom de playlist (admin)
+     */
     public function testFiltreParPlaylist() {
         $client = static::createClient();
         $client->loginUser($this->getUser());
-        
+
         $crawler = $client->request("GET", "/admin/formations");
         $this->assertResponseIsSuccessful();
 
@@ -166,6 +198,9 @@ class AdminFormationsControllerTest extends WebTestCase {
                 "la première formation filtrée ne correspond pas à celle attendue");
     }
 
+    /**
+     * Vérifie le filtre des formations par catégorie (admin)
+     */
     public function testFiltreParCategorie() {
         $client = static::createClient();
         $userRepository = static::getContainer()->get(UserRepository::class);
@@ -189,6 +224,9 @@ class AdminFormationsControllerTest extends WebTestCase {
                 "la première formation filtrée par catégorie ne correspond pas à celle attendue");
     }
 
+    /**
+     * Vérifie que le lien vers le formulaire de modification d'une formation fonctionne
+     */
     public function testLienVersFormation() {
         $client = static::createClient();
         $client->loginUser($this->getUser());
@@ -217,7 +255,10 @@ class AdminFormationsControllerTest extends WebTestCase {
         $this->assertEquals(trim($premierePlaylist), trim($crawler->filter("#formationPlaylistName")->text()),
                 "la playlist de la formation ne correspond pas");
     }
-    
+
+    /**
+     * Vérifie que le lien pour créer une nouvelle formation ouvre un formulaire vide
+     */
     public function testLienCreerFormation() {
         $client = static::createClient();
         $client->loginUser($this->getUser());

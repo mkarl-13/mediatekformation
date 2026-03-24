@@ -2,11 +2,10 @@
 {% block body %}
     <div class="w-75 mx-auto">
         <form method="post" action="{{ formation 
-            ? path('admin_formations_update', { id: formation.id }) 
-            : path('admin_formations_create') }}">
+            ? path('admin.formations.update', { id: formation.id }) 
+            : path('admin.formations.create') }}">
             <h3>Modification / création de formation</h3>
             <div class="d-flex gap-4">
-
                 <!-- Colonne gauche -->
                 <div class="d-flex flex-column flex-grow-1">
                     <div class="d-flex align-items-center gap-2 mb-2">
@@ -25,7 +24,6 @@
                         <textarea id="description" name="description" class="form-control" rows="8">{{ formation ? formation.description : '' }}</textarea>
                     </div>
                 </div>
-
                 <!-- Colonne droite -->
                 <div class="d-flex flex-column flex-grow-1">
                     <div class="d-flex align-items-center gap-2 mb-2">
@@ -58,15 +56,12 @@
                         </select>
                     </div>
                 </div>
-
             </div>
-
             <div class="text-end mt-3">
                 <span class="me-2 text-muted">Les champs marqués d'une * sont obligatoires</span>
                 <a href={{ path('admin.formations') }} class="btn btn-secondary btn-sm">Retour</a>
                 <input type="submit" value="Valider" class="btn btn-primary btn-sm">
             </div>
-                
             <input type="hidden" name="_token" value="{{ csrf_token(formation ? 'edit' ~ formation.id : 'create') }}">
         </form>
     </div>

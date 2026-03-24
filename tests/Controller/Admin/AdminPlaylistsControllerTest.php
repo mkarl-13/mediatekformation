@@ -1,6 +1,6 @@
 <?php
 
-namespace mediatekformation\tests\Controller;
+namespace App\Tests\Controller\Admin;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Entity\User;
@@ -8,29 +8,40 @@ use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Description of AdminPlaylistsControllerTest
+ * Tests du contrôleur d'administration des playlists
  *
  * @author Karl
  */
 class AdminPlaylistsControllerTest extends WebTestCase {
+
+    /**
+     * Retourne l'utilisateur admin pour les tests authentifiés
+     * @return User
+     */
     public function getUser() : User {
         $userRepository = static::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(["username" => "admin"]);
         return $user;
     }
-    
+
+    /**
+     * Vérifie que la page admin des playlists est accessible
+     */
     public function testAccesPage() {
         $client = static::createClient();
         $client->loginUser($this->getUser());
-        
+
         $client->request("GET","/admin/playlists");
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
     }
-    
+
+    /**
+     * Vérifie le tri des playlists par nom en ordre croissant (admin)
+     */
     public function testTriNomAsc() {
         $client = static::createClient();
         $client->loginUser($this->getUser());
-        
+
         $crawler = $client->request("GET", "/admin/playlists");
         $this->assertResponseIsSuccessful();
 
@@ -42,15 +53,17 @@ class AdminPlaylistsControllerTest extends WebTestCase {
         $this->assertEquals("Bases de la programmation (C#)", $premierTitre,
                 "la première playlist renvoyée n'est pas celle attendue en tri ASC");
     }
-    
+
+    /**
+     * Vérifie le tri des playlists par nom en ordre décroissant (admin)
+     */
     public function testTriNomDesc() {
         $client = static::createClient();
         $client->loginUser($this->getUser());
-        
+
         $crawler = $client->request("GET", "/admin/playlists");
         $this->assertResponseIsSuccessful();
 
-        
         $lien = $crawler->filter("#sortByNameDesc")->link();
         $crawler = $client->click($lien);
         $this->assertResponseIsSuccessful();
@@ -59,11 +72,14 @@ class AdminPlaylistsControllerTest extends WebTestCase {
         $this->assertEquals("Visual Studio 2019 et C#", $premierTitre,
                 "la première playlist renvoyée n'est pas celle attendue en tri DESC");
     }
-    
+
+    /**
+     * Vérifie le tri des playlists par nombre de formations en ordre croissant (admin)
+     */
     public function testTriNombreFormationsAsc() {
         $client = static::createClient();
         $client->loginUser($this->getUser());
-        
+
         $crawler = $client->request("GET", "/admin/playlists");
         $this->assertResponseIsSuccessful();
 
@@ -75,15 +91,17 @@ class AdminPlaylistsControllerTest extends WebTestCase {
         $this->assertEquals("Cours Merise/2", $premierTitre,
                 "la première playlist renvoyée n'est pas celle attendue en tri ASC");
     }
-    
+
+    /**
+     * Vérifie le tri des playlists par nombre de formations en ordre décroissant (admin)
+     */
     public function testTriNombreFormationsDesc() {
         $client = static::createClient();
         $client->loginUser($this->getUser());
-        
+
         $crawler = $client->request("GET", "/admin/playlists");
         $this->assertResponseIsSuccessful();
 
-        
         $lien = $crawler->filter("#sortByFormationCountDesc")->link();
         $crawler = $client->click($lien);
         $this->assertResponseIsSuccessful();
@@ -92,11 +110,14 @@ class AdminPlaylistsControllerTest extends WebTestCase {
         $this->assertEquals("Bases de la programmation (C#)", $premierTitre,
                 "la première playlist renvoyée n'est pas celle attendue en tri DESC");
     }
-    
+
+    /**
+     * Vérifie le filtre des playlists par nom (admin)
+     */
     public function testFiltreParNom() {
         $client = static::createClient();
         $client->loginUser($this->getUser());
-        
+
         $crawler = $client->request("GET", "/admin/playlists");
         $this->assertResponseIsSuccessful();
 
@@ -113,11 +134,14 @@ class AdminPlaylistsControllerTest extends WebTestCase {
         $this->assertEquals("Exercices objet (sujets EDC BTS SIO)", $premierTitre,
                 "la première playlist filtrée ne correspond pas à celle attendue");
     }
-    
+
+    /**
+     * Vérifie le filtre des playlists par catégorie (admin)
+     */
     public function testFiltreParCategorie() {
         $client = static::createClient();
         $client->loginUser($this->getUser());
-        
+
         $crawler = $client->request("GET", "/admin/playlists");
         $this->assertResponseIsSuccessful();
 
@@ -134,14 +158,17 @@ class AdminPlaylistsControllerTest extends WebTestCase {
         $this->assertEquals("Bases de la programmation (C#)", $premierTitre,
                 "la première playlist filtrée par catégorie ne correspond pas à celle attendue");
     }
-    
+
+    /**
+     * Vérifie que le lien vers le détail d'une playlist fonctionne correctement (admin)
+     */
     public function testLienVersPlaylist() {
         $client = static::createClient();
         $client->loginUser($this->getUser());
-        
+
         $crawler = $client->request("GET", "/admin/playlists");
         $this->assertResponseIsSuccessful();
-        
+
         $premierNom = $crawler->filter("#playlistName")->first()->text();
         $premierNombreFormations = $crawler->filter("#playlistFormationCount")->first()->text();
 
@@ -154,7 +181,10 @@ class AdminPlaylistsControllerTest extends WebTestCase {
         $this->assertEquals(trim($premierNombreFormations), trim($crawler->filter("#playlistFormationCount")->text()),
                 "le nombre de formations de la playlist ne correspond pas");
     }
-    
+
+    /**
+     * Vérifie que le lien pour créer une nouvelle playlist ouvre un formulaire vide
+     */
     public function testLienCreerPlaylist() {
         $client = static::createClient();
         $client->loginUser($this->getUser());

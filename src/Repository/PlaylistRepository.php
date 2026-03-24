@@ -7,19 +7,33 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Accès aux données des playlists
+ *
  * @extends ServiceEntityRepository<Playlist>
+ * @author Karl
  */
 class PlaylistRepository extends ServiceEntityRepository {
 
+    /**
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry) {
         parent::__construct($registry, Playlist::class);
     }
 
+    /**
+     * Persiste et enregistre une playlist en base de données
+     * @param Playlist $entity
+     */
     public function add(Playlist $entity): void {
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();
     }
 
+    /**
+     * Supprime une playlist de la base de données
+     * @param Playlist $entity
+     */
     public function remove(Playlist $entity): void {
         $this->getEntityManager()->remove($entity);
         $this->getEntityManager()->flush();
@@ -27,7 +41,6 @@ class PlaylistRepository extends ServiceEntityRepository {
 
     /**
      * Retourne toutes les playlists triées sur le nom de la playlist
-     * @param type $champ
      * @param type $ordre
      * @return Playlist[]
      */
@@ -39,11 +52,10 @@ class PlaylistRepository extends ServiceEntityRepository {
                         ->getQuery()
                         ->getResult();
     }
-    
+
     /**
      * Retourne toutes les playlists triées sur le nombre de formations
-     * @param type $champ
-     * @param type $ordre
+     * @param string $ordre
      * @return Playlist[]
      */
     public function findAllOrderByFormationsCount(string $ordre): array {

@@ -8,6 +8,11 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * Entité représentant une playlist de formations
+ *
+ * @author emds
+ */
 #[ORM\Entity(repositoryClass: PlaylistRepository::class)]
 class Playlist {
 
@@ -28,28 +33,48 @@ class Playlist {
     #[ORM\OneToMany(targetEntity: Formation::class, mappedBy: 'playlist')]
     private Collection $formations;
 
+    /**
+     * Initialise la collection de formations
+     */
     public function __construct() {
         $this->formations = new ArrayCollection();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getName(): ?string {
         return $this->name;
     }
 
+    /**
+     * @param string|null $name
+     * @return static
+     */
     public function setName(?string $name): static {
         $this->name = $name;
 
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getDescription(): ?string {
         return $this->description;
     }
 
+    /**
+     * @param string|null $description
+     * @return static
+     */
     public function setDescription(?string $description): static {
         $this->description = $description;
 
@@ -63,6 +88,10 @@ class Playlist {
         return $this->formations;
     }
 
+    /**
+     * @param Formation $formation
+     * @return static
+     */
     public function addFormation(Formation $formation): static {
         if (!$this->formations->contains($formation)) {
             $this->formations->add($formation);
@@ -72,6 +101,10 @@ class Playlist {
         return $this;
     }
 
+    /**
+     * @param Formation $formation
+     * @return static
+     */
     public function removeFormation(Formation $formation): static {
         if ($this->formations->removeElement($formation) &&
                 $formation->getPlaylist() === $this) {
@@ -83,6 +116,8 @@ class Playlist {
     }
 
     /**
+     * Retourne la liste (sans doublons) des noms de catégories
+     * de toutes les formations de la playlist
      * @return Collection<int, string>
      */
     public function getCategoriesPlaylist(): Collection {
