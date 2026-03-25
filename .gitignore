@@ -29,3 +29,7 @@
 /cahier_des_charges.pdf
 /contratDeveloppement.pdf
 ###< documents ###
+
+###> php documentation ###
+/.phpdoc/
+###< php documentation ###
