@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.3
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : lun. 13 mai 2024 à 15:26
--- Version du serveur : 8.2.0
--- Version de PHP : 8.2.13
+-- Généré le : jeu. 26 mars 2026 à 15:17
+-- Version du serveur : 8.4.7
+-- Version de PHP : 8.3.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Base de données : `mediatekformation`
 --
-CREATE DATABASE IF NOT EXISTS `mediatekformation` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE `mediatekformation`;
 
 -- --------------------------------------------------------
 
@@ -32,9 +30,9 @@ USE `mediatekformation`;
 DROP TABLE IF EXISTS `categorie`;
 CREATE TABLE IF NOT EXISTS `categorie` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `categorie`
@@ -59,7 +57,7 @@ INSERT INTO `categorie` (`id`, `name`) VALUES
 
 DROP TABLE IF EXISTS `doctrine_migration_versions`;
 CREATE TABLE IF NOT EXISTS `doctrine_migration_versions` (
-  `version` varchar(191) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `version` varchar(191) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
   `executed_at` datetime DEFAULT NULL,
   `execution_time` int DEFAULT NULL,
   PRIMARY KEY (`version`)
@@ -70,7 +68,8 @@ CREATE TABLE IF NOT EXISTS `doctrine_migration_versions` (
 --
 
 INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_time`) VALUES
-('DoctrineMigrations\\Version20240513134621', '2024-05-13 13:47:49', 1145);
+('DoctrineMigrations\\Version20240513134621', '2024-05-13 13:47:49', 1145),
+('DoctrineMigrations\\Version20260322134848', '2026-03-22 13:49:07', 161);
 
 -- --------------------------------------------------------
 
@@ -83,27 +82,26 @@ CREATE TABLE IF NOT EXISTS `formation` (
   `id` int NOT NULL AUTO_INCREMENT,
   `playlist_id` int DEFAULT NULL,
   `published_at` datetime DEFAULT NULL,
-  `title` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` longtext COLLATE utf8mb4_unicode_ci,
-  `video_id` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `video_id` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_404021BF6BBD148` (`playlist_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=241 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=246 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `formation`
 --
 
 INSERT INTO `formation` (`id`, `playlist_id`, `published_at`, `title`, `description`, `video_id`) VALUES
-(1, 1, '2021-01-04 17:00:12', 'Eclipse n°8 : Déploiement', 'Exécution de l\'application en dehors de l\'IDE, en invite de commande.\nCréation d\'un ficher jar pour le déploiement de l\'application.\n00:20 : exécuter l\'application à partir d\'un invite de commandes\n04:41 : créer un fichier jar auto exécutable\n06:42 : exécuter un fichier jar directement\n07:09 : exécuter un fichier jar dans l\'invite de commande pour avoir les retours console', 'Z4yTTXka958'),
 (2, 1, '2021-01-02 17:00:01', 'Eclipse n°7 : Tests unitaires', 'Intégration de JUnit dans l\'application et création de tests unitaires.\n00:07 : rappel sur le principe du test unitaire\n01:01 : intégrer JUnit au projet (une seule fois)\n01:52 : créer une classe de test\n03:49 : créer une méthode de test\n08:35 : lancer le test\n09:11 : créer une autre méthode de test pour tester la même méthode\n11:02 : relancer le test', '-nw42Xq6cYE'),
 (3, 1, '2020-12-30 17:00:07', 'Eclipse n°6 : Documentation technique', 'Intégration des commentaires normalisés et génération automatique de la documentation technique\n00:08 : insérer des commentaires normalisés\n02:14 : générer documentation technique\n04:35 : repérer et corriger les erreurs et warnings\n06:58 : afficher la documentation technique', 'PrK_P3TKc00'),
 (4, 1, '2020-12-29 17:00:00', 'Eclipse n°5 : Refactoring', 'Utilisation des outils de refactoring et de génération automatique de code.\n01:00 : refaire automatiquement les indentations\n01:25 : changer un nom (classe, méhode, propriété)\n04:04 : extraire une méthode\n06:19 : modifier la signature d\'une méthode\n09:23 : générer du code (constructeur, getter/setter)\n12:34 : encapsuler une propriété\n15:30 : extraire une interface', '1p_mKDDSMnQ'),
 (5, 1, '2020-11-09 17:00:25', 'Eclipse n°4 : WindowBuilder', 'Intégration de l\'outil WindowBuilder dans Eclipse pour pouvoir construire de façon visuelle, une interface graphique.\n00:00 : téléchargement et configuration de WindowBuilder\n03:00 : création d\'une JFrame avec WindowBuilder\n05:56 : construction de l\'interface graphique\n\n10:43 : gestion des événements\n16:15 : gestion des ressources graphiques (images...)', 'pQfbr3hpw04'),
 (6, 1, '2020-11-07 17:00:09', 'Eclipse n°3 : GitHub et Eclipse', 'Créer un compte sur le site GitHub (site offrant un serveur de gestion de versions pour mémoriser les différentes étapes d\'un projet et pour le travail collaboratif).\nLier ce compte à un projet sous Eclipse.\nUtiliser ce lien pour enregistrer à distance (commit and push), annuler un commit (revert commit) ou récupérer un projet distant (clone).\n\n\nSommaire :\n\n00:00 : création d\'un compte GitHub\n01:17 : création d\'un repository sur GitHub\n\n02:35 : création d\'un projet sous Eclipse\n\n05:07 : création d\"un dépôt local dans Eclipse\n07:17 : lien avec le dépôt distant (premier enregistrement : commit and push)\n13:00 : annulation d\'un commit (revert commit)\n15:28 : récupération d\'un projet distant (clone)\n\n\nERRATUM :\n1:48 : je dis que qu\'un repository privé est payant. En fait, il semblerait que depuis janvier 2019, il soit gratuit avec une limite de 3 collaborateurs par repository (merci à Kassim Acacia pour le signalement)', 'mlN7VvZkXtM'),
-(7, 1, '2020-11-05 17:00:02', 'Eclipse n°2 : rétroconception avec ObjectAid', 'Utilisation de l\'outil ObjectAid sous Eclipse pour faire de la rétroconception sur les classes, c\'est-à-dire obtenir le diagramme de classes à partir de classes existantes.\n\nATTENTION, contrairement à ce qui est présenté dans la vidéo, ObjectAid n\'est plus accessible via le site. Il faut aller ici :\nhttps://github.com/AbbaouiAmine/objectAidArchive/blob/main/objectaid-1.2.4.zip\nTélécharger le zip. Dans la vidéo, à 0:48, quand je dis de donner l\'adresse Internet, à la place, il faut cliquer sur \"archive\", aller sélectionner le fichier zip téléchargé puis continuer les autres étapes de la vidéo.', '9UBtVxHsnNk'),
+(7, 1, '2026-03-21 11:33:05', 'Eclipse n°2 : rétroconception avec ObjectAid', 'Utilisation de l\'outil ObjectAid sous Eclipse pour faire de la rétroconception sur les classes, c\'est-à-dire obtenir le diagramme de classes à partir de classes existantes.\r\n\r\nATTENTION, contrairement à ce qui est présenté dans la vidéo, ObjectAid n\'est plus accessible via le site. Il faut aller ici :\r\nhttps://github.com/AbbaouiAmine/objectAidArchive/blob/main/objectaid-1.2.4.zip\r\nTélécharger le zip. Dans la vidéo, à 0:48, quand je dis de donner l\'adresse Internet, à la place, il faut cliquer sur \"archive\", aller sélectionner le fichier zip téléchargé puis continuer les autres étapes de la vidéo.', '9UBtVxHsnNk'),
 (8, 1, '2020-11-03 17:08:22', 'Eclipse n°1 : installation de l\'IDE', 'Première vidéo d\'une série sur Eclipse et le développement Java.\nInstallation du JDK et d\'Eclipse 2020-09.', 'EBzTRPgbqdc'),
-(9, 24, '2020-11-01 17:00:13', 'UML : Diagramme de paquetages', 'Présentation des éléments qui constituent un diagramme de paquetages.', 'Wkbwzfybk1E'),
+(9, 24, '2026-03-25 09:06:47', 'UML : Diagramme de paquetages Test', 'Présentation des éléments qui constituent un diagramme de paquetages.', 'Wkbwzfybk1E'),
 (10, 24, '2020-10-30 17:00:09', 'UML : Diagramme de classes', 'Présentation des éléments qui constituent un diagramme de classes', 'odKgwPftibM'),
 (12, 24, '2020-09-26 16:30:01', 'UML : Diagramme d\'activité', 'Présentation du tableau descriptif d\'un cas d\'utilisation et la représentation graphique de son scénario avec un diagramme d\'activité.', 'D4tnhIpYYSM'),
 (13, 24, '2020-09-24 16:30:01', 'UML : Diagramme de cas d\'utilisation', 'Présentation du diagramme de cas d\'utilisation à travers la construction d\'un exemple.', 'LDTDlXMV1xY'),
@@ -172,7 +170,6 @@ INSERT INTO `formation` (`id`, `playlist_id`, `published_at`, `title`, `descript
 (76, 25, '2018-11-18 18:29:53', 'Cours Merise/2 extensions', 'Liens rapides plus bas, pour accéder aux différentes parties du cours.\r\n\r\n(Cette vidéo vient en remplacement des anciennes vidéos créées au début de la vie de la chaîne et dont le son était de très mauvaise qualité)\r\n\r\nPrésentation des extensions de Merise au niveau du MCD.\r\n\r\nPrérequis : avoir suivi le cours \"Modèle relationnel et MCD\" :\r\nhttps://youtu.be/VFHVNA8xgK0\r\n\r\nDétail du cours et liens : \r\nExtensions : 0:39\r\nSous-type : 3:00\r\nLien relatif : 5:02\r\nAgrégation : 7:25\r\nContraintes : 10:42\r\nContrainte d\'exclusion : 18:21\r\nContrainte sur association et pivot : 20:23\r\nContrainte de partition : 26:55\r\nContrainte de totalité : 30:53\r\nContrainte de simultanéité : 33:27\r\nContrainte d\'inclusion : 34:46\r\nInclusion à portée multiples : 36:30\r\nContrainte d\'unicité : 39:49\r\nExercices : 42:03\r\n\r\nLien vers le pdf du cours :\r\nhttp://bit.ly/EmdsMerise2\r\n\r\nExercices de mise en pratique (modélisations dans les sujets d\'EDC) :\r\nhttps://www.youtube.com/playlist?list=PLRR7wjtXb1cAivDuEUEw24iuwTTVXfN7j\r\n\r\nCours triggers (pour programmer les contraintes dans la base de données) :\r\nhttps://www.youtube.com/playlist?list=PLRR7wjtXb1cAwWrZwg04QsTVY_PRERfgu', 'smTFM4GCEgc'),
 (77, 27, '2018-11-13 16:36:52', 'Cours Programmation Objet', 'Liens rapides plus bas, pour accéder aux différentes parties du cours.\r\n\r\n(Cette vidéo vient en remplacement des anciennes vidéos créées au début de la vie de la chaîne et dont le son était de mauvaise qualité)\r\n\r\nPrésentation des notions fondamentales de la programmation objet (correspond au cours SLAM2 du BTS SIO).\r\n\r\nDétail du cours et liens :\r\nintroduction, classe / objet : 0:42 \r\nencapsulation : 17:23\r\nsetter / getter : 23:09\r\nconstructeur / destructeur : 31:35\r\nstatique : 43:31\r\npropriété objet : 46:00\r\nréférence d\'un objet: 50:18\r\nhéritage : 54:37\r\nsurcharge : 1:09:46\r\npolymorphisme : 1:11:28\r\nthis / super : 1:17:25\r\ncatégories de classes et classes particulières (métiers, techniques, génériques, collections)  : 1:21:08\r\nabstraite (classe, méthode) : 1:29:03\r\nfinale (classe, méthode, propriété) : 1:34:06\r\ninterface (classe) : 1:35:18\r\norigine d\'un objet : 1:43:05\r\ntranstypage / casting : 1:45:05\r\npackage / MVC : 1:48:34\r\npersistance : 1:52:44\r\nquoi d\'autre ? conclusion et liens vers les mises en pratique : 1:55:55\r\n\r\nLien vers le pdf du cours :\r\nhttp://bit.ly/EmdsObjet\r\n\r\nERRATUM :\r\n39:04 méthode getPseudo, il y a marqué 2 fois String au lieu de public String.\r\n\r\nPensez aussi à mettre en pratique :\r\nPOO TP Java (tp d\'application directe du cours) : https://www.youtube.com/playlist?list=PLRR7wjtXb1cC-4OLKMYJcnaRDhzM6GxcX\r\nExercices objet (issus des sujets EDC du BTS SIO) : https://www.youtube.com/playlist?list=PLRR7wjtXb1cB3PAYJZqQKDJICsSRmSdr8\r\nTP Android (programmation mobile en java) : https://www.youtube.com/playlist?list=PLRR7wjtXb1cB-jibndUw-qv79O2KQkG6U', 'fKPK2VhsA4o'),
 (78, 26, '2018-11-02 18:21:55', 'Cours Modèle Relationnel et MCD', 'Liens rapides plus bas, pour accéder aux différentes parties du cours.\r\n\r\n(Cette vidéo vient en remplacement des anciennes vidéos créées au début de la vie de la chaîne et dont le son était de très mauvaise qualité)\r\n\r\nPrésentation des règles du Modèle Relationnel pour créer une base de données optimisée. Présentation du MCD de la méthode Merise pour faciliter la création de la base de données en respectant les règles du Modèle Relationnel.\r\n\r\nDétail du cours et liens :\r\nintroduction : 0:38\r\nbase de données relationnelle : 2:13\r\nexemple de MCD : 4:47\r\nModèle Relationnel (MLD) : \r\n- dépendance fonctionnelle (DF) : 13:10\r\n- relation, clés et formes normales : 23:19\r\nModèle Conceptuel de Données (MCD) :\r\n- introduction, entité, association : 32:05\r\n- DF entre entités (CIF) : 35:17\r\n- cardinalités : 36:58\r\n- associations vides : 38:23\r\n- CIF sur association : 39:23\r\n- intégrité fonctionnelle : 41:16\r\n- exercice : 42:49\r\n- historiques et numérotations ancienne version : 44:44\r\n- liens identifiants (liens relatifs) : 47:44\r\n- exercice : 51:39\r\n- double CIF : 55:17\r\n- CIF + association : 56:56\r\n- association réflexive : 58:25\r\n- exercice : 59:50\r\n- héritage : 1:02:15\r\n\r\nLien vers le pdf du cours :\r\nhttp://bit.ly/EmdsMCD\r\n\r\n\r\nExercices de mise en pratique :\r\nhttps://www.youtube.com/playlist?list=PLRR7wjtXb1cAivDuEUEw24iuwTTVXfN7j\r\n\r\nCours Merise/2 extensions :\r\nhttps://youtu.be/smTFM4GCEgc', 'VFHVNA8xgK0'),
-(79, 8, '2018-10-18 09:50:41', 'Android Studio (complément n°10) : Ajout icone dans menu', 'A partir d\'une application Android, ajouter des icônes utilisables par exemple dans les menus drawer.', 'VDGScSfKP_4'),
 (80, 8, '2018-10-10 19:33:05', 'Android Studio (complément n°9) : Ajout texte sur photo', 'A partir d\'une application Android, ajouter du texte sur une photo (en choisissant la taille, la couleur, la position). Une nouvelle image est créée.\r\nPrérequis : avoir installé et configuré Android Studio (https://youtu.be/M6pi6jXpRrs).', 'kanbIK-Jf3A'),
 (81, 8, '2018-10-04 10:35:09', 'Android Studio (complément n°8) : Enregistrer une photo', 'A partir d\'une application Android, enregistrer une photo dans la galerie..\r\nPrérequis : avoir fait l\'application \"Android Studio (complément n°7) : Prendre une photo\" car l\'application actuelle part de cette application :\r\nhttps://youtu.be/8890GpBwn9w', 'YCnHHrR1luA'),
 (82, 8, '2018-09-16 09:48:25', 'Android Studio (complément n°7) : Prendre une photo', 'A partir d\'une application Android, accéder à l\'appareil photo pour prendre une photo, et l\'enregistrer dans un fichier temporaire pour l\'afficher dans l\'application.\r\nPrérequis : avoir installé  et configuré Android Studio (https://youtu.be/M6pi6jXpRrs).', '8890GpBwn9w'),
@@ -181,7 +178,6 @@ INSERT INTO `formation` (`id`, `playlist_id`, `published_at`, `title`, `descript
 (85, 8, '2018-08-17 07:19:08', 'Android Studio (complément n°4) : Envoyer un SMS', 'Coder l\'envoi d\'un SMS vers n\'importe quel smartphone, à partir d\'une application Android.\r\nPrérequis : avoir installé et configuré Android Studio (sinon, visionner la vidéo du TP1 Android : https://youtu.be/M6pi6jXpRrs).\r\n(petite erreur : le numéro de mobile fictif saisi à la fin est un peu trop long... ceci dit, ça ne change rien aux explications)', 'UNBTFdbKymU'),
 (86, 8, '2018-08-06 21:43:36', 'Android Studio (complément n°3) : Activity dépendante', 'Apprendre à créer des activity dépendantes (revenir à l\'activity parent par la flèche du haut).\r\nPrérequis : avoir installé et configuré Android Studio.', '2n3bGqiaWMs'),
 (88, 8, '2018-07-26 19:10:11', 'Android Studio (complément n°2) : Récupérer les contacts du mobile', 'Apprendre à récupérer les contacts présents dans le mobile.\r\nPrérequis : avoir installé et configuré Android Studio (voir 1e vidéo du TP Android : https://youtu.be/M6pi6jXpRrs)', '4lT0pnyzkSA'),
-(89, 8, '2018-07-09 19:56:31', 'Android Studio (complément n°1) : Navigation Drawer et Fragment', 'Apprendre à créer une navigation type drawer (menu qui apparaît à gauche) et y intégrer des fragments (pour l\'affichage des différentes pages). Apprendre à insérer une Activity existante dans un fragment.\r\nPrérequis : avoir installé et configuré Android Studio (voir 1e vidéo du TP Android : https://youtu.be/M6pi6jXpRrs)', 'rUnuYTjaBoU'),
 (90, 9, '2018-05-13 20:52:36', 'Sujet E5 SLAM 2017 : cas DANE mission4 (et quelques annonces)', 'Correction commentée de la mission 4 du sujet SLAM 2017 DANE tombé à Nouméa en novembre 2017 (partie analyse).\r\nPlusieurs questions de \"bon sens\" puis un schéma assez classique.', 'gmZYXP3hPts'),
 (91, 9, '2018-05-11 16:58:14', 'Sujet E5 SLAM 2017 : cas DANE mission3', 'Correction commentée de la mission 3 du sujet SLAM 2017 DANE tombé à Nouméa en novembre 2017 (partie objet).\r\n1e question très simple.\r\n2e question nettement plus complexe car il fallait bien comprendre le fonctionnement des classes et l\'utilisation des dictionnaires.\r\n3e question (une erreur à trouver), dont le résultat est très simple mais pas forcément évident à trouver.', 'cZ1WR3f39xY'),
 (92, 9, '2018-05-11 09:20:20', 'Sujet E5 SLAM 2017 : cas DANE mission2', 'Correction commentée de la mission 2 du sujet SLAM 2017 DANE tombé à Nouméa en novembre 2017 (partie web : PHP, Javascript, MySQL...).\r\nUn dossier déstabilisant car donnant l\'impression qu\'il faut certaines connaissances techniques (jquery, json...) alors que ce n\'est pas du tout le cas. Les réponses au final sont très simples. Vous allez voir comment aborder ce genre de mission.', 'OOaMlhFca6o'),
@@ -197,9 +193,9 @@ INSERT INTO `formation` (`id`, `playlist_id`, `published_at`, `title`, `descript
 (102, 11, '2018-02-07 17:39:21', 'TP Android n°14 : plusieurs interfaces', 'Prérequis : avoir des connaissance en programmation objet (et avoir vu les vidéos précédentes de la construction de l\'application Android)\r\nBut : montrer comment créer plusieurs interfaces et comment passer d\'une interface à une autre.', '0LedL1ufiAs'),
 (103, 11, '2018-02-06 10:30:31', 'TP Android n°13 : formatage de la date', 'Prérequis : avoir des connaissance en programmation objet (et avoir vu les vidéos précédentes de la construction de l\'application Android)\r\nBut : montrer comment transformer une chaîne en date et vice versa.', 'NwvHF4BcMck'),
 (104, 11, '2018-02-04 18:03:43', 'TP Android n°12 : base de données distante MySQL (4)', 'Prérequis : avoir des connaissance en programmation objet (et avoir vu les vidéos précédentes de la construction de l\'application Android)\r\nBut : sous Android Studio, récupération du dernier profil distant dans le thread et affichage des informations dans l\'interface.', 'uNP706aKIRs'),
-(105, 11, '2018-02-02 13:30:29', 'TP Android n°11 : base de données distante MySQL (3)', 'Prérequis : avoir des connaissance en programmation objet, en PHP et MySQL (et avoir vu les vidéos précédentes de la construction de l\'application Android)\r\nBut : sous Android Studio, création la classe AccesDistant qui est en lien avec AccesHTTP pour communiquer avec le serveur distant. Contrôle, dans la console, que la communication marche. Contrôle, dans MySQL, que le profil s\'enregistre.\r\n\r\nERRATUM : 30:10 je dis qu\'il envoie vers le serveur la requête. Ce n\'est pas la requête qui est envoyée mais juste les valeurs du profil. La requête est construite dans la page PHP.', '8Kyq69u9iqU');
+(105, 11, '2018-02-02 13:30:29', 'TP Android n°11 : base de données distante MySQL (3)', 'Prérequis : avoir des connaissance en programmation objet, en PHP et MySQL (et avoir vu les vidéos précédentes de la construction de l\'application Android)\r\nBut : sous Android Studio, création la classe AccesDistant qui est en lien avec AccesHTTP pour communiquer avec le serveur distant. Contrôle, dans la console, que la communication marche. Contrôle, dans MySQL, que le profil s\'enregistre.\r\n\r\nERRATUM : 30:10 je dis qu\'il envoie vers le serveur la requête. Ce n\'est pas la requête qui est envoyée mais juste les valeurs du profil. La requête est construite dans la page PHP.', '8Kyq69u9iqU'),
+(106, 11, '2018-02-01 12:18:38', 'TP Android n°10 : base de données distante MySQL (2)', 'IMPORTANT n°1 : nouvelle classe AccesHTTP à télécharger (voir plus bas) \r\n\r\nIMPORTANT n°2 : si vous n\'arrivez pas à accéder à la base de données :\r\nIl existe maintenant 2 formats de BDD : MySQL et MariaDB, tous les 2 accessibles au même endroit et fonctionnant de façon similaire, mais sur des ports différents.\r\nDans le fichier fonctions.php que vous avez créé, je vous conseille de modifier la variable de connexion par :\r\n$conn = new PDO(\"mysql:host=$serveur;dbname=$bd;port=3308\", $login, $mdp);\r\nEn fait, si vous avez créer la base sous MariaDB (actuellement par défaut) le port est celui par défaut : 3306. Si vous avez sélectionné MySQL, normalement le nouveau port est 3308. Ca vaut d\'ailleurs le coup aussi de tester les 2...\r\n\r\n\r\n\r\n Prérequis : avoir des connaissance en programation objet (et avoir vu les vidéos précédentes de la construction de l\'application Android)\r\nBut : sous Android Studio, faire les bons paramétrages et créer les classes outils nécessaires pour l\'accès au serveur distant via Internet et le protocole HTTP.*\r\nERRATUM : à 22:09 je dis par erreur que onPostExecute est appelé par le execute de la classe mère. C\'est doInBackground qui est appelé par execute de la classe mère. onPostExecute est une méthode événementielle appelée lorsque le serveur renvoie une réponse.\r\n\r\nIMPORTANT :\r\nDans la classe AccesHTTP, j\'utilise des classes qui sont obsolètes et qui peuvent maintenant poser problème. Je ferai une vidéo pour montrer le principe d\'une nouvelle classe AccesHTTP, mais en attendant, je vous donne son code que vous pouvez récupérer ici : \r\nhttp://bit.ly/EmdsNewAccesHTTP\r\nPensez à changer le nom du package (1e ligne).\r\nLa logique est proche de la classe montrée dans la vidéo et normalement vous n\'avez rien à changer dans le reste du programme excepté que vous n\'avez plus besoin de mettre la ligne \'useLibrary \"org.apache.http.legacy\" \' dans build.gradle, comme montré en tout début de vidéo.', 'n5AeP-fqT30');
 INSERT INTO `formation` (`id`, `playlist_id`, `published_at`, `title`, `description`, `video_id`) VALUES
-(106, 11, '2018-02-01 12:18:38', 'TP Android n°10 : base de données distante MySQL (2)', 'IMPORTANT n°1 : nouvelle classe AccesHTTP à télécharger (voir plus bas) \r\n\r\nIMPORTANT n°2 : si vous n\'arrivez pas à accéder à la base de données :\r\nIl existe maintenant 2 formats de BDD : MySQL et MariaDB, tous les 2 accessibles au même endroit et fonctionnant de façon similaire, mais sur des ports différents.\r\nDans le fichier fonctions.php que vous avez créé, je vous conseille de modifier la variable de connexion par :\r\n$conn = new PDO(\"mysql:host=$serveur;dbname=$bd;port=3308\", $login, $mdp);\r\nEn fait, si vous avez créer la base sous MariaDB (actuellement par défaut) le port est celui par défaut : 3306. Si vous avez sélectionné MySQL, normalement le nouveau port est 3308. Ca vaut d\'ailleurs le coup aussi de tester les 2...\r\n\r\n\r\n\r\n Prérequis : avoir des connaissance en programation objet (et avoir vu les vidéos précédentes de la construction de l\'application Android)\r\nBut : sous Android Studio, faire les bons paramétrages et créer les classes outils nécessaires pour l\'accès au serveur distant via Internet et le protocole HTTP.*\r\nERRATUM : à 22:09 je dis par erreur que onPostExecute est appelé par le execute de la classe mère. C\'est doInBackground qui est appelé par execute de la classe mère. onPostExecute est une méthode événementielle appelée lorsque le serveur renvoie une réponse.\r\n\r\nIMPORTANT :\r\nDans la classe AccesHTTP, j\'utilise des classes qui sont obsolètes et qui peuvent maintenant poser problème. Je ferai une vidéo pour montrer le principe d\'une nouvelle classe AccesHTTP, mais en attendant, je vous donne son code que vous pouvez récupérer ici : \r\nhttp://bit.ly/EmdsNewAccesHTTP\r\nPensez à changer le nom du package (1e ligne).\r\nLa logique est proche de la classe montrée dans la vidéo et normalement vous n\'avez rien à changer dans le reste du programme excepté que vous n\'avez plus besoin de mettre la ligne \'useLibrary \"org.apache.http.legacy\" \' dans build.gradle, comme montré en tout début de vidéo.', 'n5AeP-fqT30'),
 (107, 11, '2018-01-31 14:20:06', 'TP Android n°9 : base de données distante MySQL (1)', 'Prérequis : de préférence des connaissances de base en PHP et MySQL\r\n\r\nBut : installer WAMP (ou LAMP ou MAMP suivant votre système) pour tester en local, créer une base de données MySQL (en utilisant phpMyAdmin), créer 2 pages php (une pour se connecter à la base de données, une autre pour gérer les demandes de l\'application Android qui voudra enregistrer un profil et récupérer le dernier profil enregistré).\r\nERRATUM : tout à la fin, je parle de \"vidéo précédente\", il est bien sûr question de \"vidéo suivante\".', 'PKd8CEXXyLk'),
 (108, 11, '2018-01-28 14:39:00', 'TP Android n°8 : base de  données locale SQLite', 'Prérequis : connaissances en Java, en programmation objet, en SQL et avoir vu les vidéos précédentes de cette série\r\nBut : Découvrir le fonctionnement d\'une base de données au format SQLite. Créer les classes d\'accès. Manipuler un curseur. Enregistrer les profils et les récupérer. Utiiser un browser externe pour consulter la base de données.', 'vRaR3yLnHig'),
 (109, 11, '2018-01-25 17:47:06', 'TP Android n°7 : persistance par sérialisation', 'Prérequis : connaissances en Java et programmation objet (voir le cours objet et le TP Java) et avoir vu les vidéos précédentes de cette série\r\nBut : enregistrer le profil par sérialisation dans un fichier binaire afin de le récupérer lors de l\'exécution suivante de l\'application. La classe de sérialisation vous est donnée et peut être réutilisée dans n\'importe quelle application Java.', 'pLGSguzM9jU'),
@@ -317,23 +313,27 @@ INSERT INTO `formation` (`id`, `playlist_id`, `published_at`, `title`, `descript
 (222, 19, '2016-11-29 13:11:53', 'Cours MCD vs Diagramme de classes (1 à 11 / 20) : introduction, entités, associations', 'Prérequis : connaissances en MCD et Diagramme de classes\r\nBut : montrer comment passer du MCD au Diagramme de classes\r\nLe cours est constitué de 20 diapos, découpées en 2 vidéos (durée totale 26mn) :\r\n1-11 : introduction, entités, associations\r\n12-20 : héritage, contraintes, exercices\r\n\r\nLien vers le pdf du cours :\r\nhttp://bit.ly/EmdsMCD_vs_UML', 'LxpWExZwKQs'),
 (223, 20, '2016-11-02 15:46:24', 'Cours Transactions et verrous (14 à 17 / 17) : risques sur les verrous et cas d\'utilisation', 'Prérequis : connaissances basiques en SQL\r\nBut : présentation des transactions sql et de leur niveau d\'isolement, ainsi que des verrous explicites (programmation dans un SGBDR)\r\nLe cours est constitué de 17 diapos, découpées en 3 vidéos (durée totale 32mn) :\r\n1-6 : transactions\r\n7-13 : verrous et problèmes d\'accès\r\n14-17 : risques sur les verrous et cas d\'utilisation\r\n\r\nlien vers le pdf du cours :\r\nhttp://bit.ly/EmdsTransactions_verrous', '4yW0fTIQW6k'),
 (224, 20, '2016-11-02 15:42:03', 'Cours Transactions et verrous (7 à 13 / 17) : verrous et problèmes d\'accès', 'Prérequis : connaissances basiques en SQL\r\nBut : présentation des transactions sql et de leur niveau d\'isolement, ainsi que des verrous explicites (programmation dans un SGBDR)\r\nLe cours est constitué de 17 diapos, découpées en 3 vidéos (durée totale 32mn) :\r\n1-6 : transactions\r\n7-13 : verrous et problèmes d\'accès\r\n14-17 : risques sur les verrous et cas d\'utilisation\r\n\r\nlien vers le pdf du cours :\r\nhttp://bit.ly/EmdsTransactions_verrous', 'o7Yjg8Ct4Bs'),
-(225, 20, '2016-11-02 15:34:02', 'Cours Transactions et verrous (1 à 6 / 17) : transactions', 'Prérequis : connaissances basiques en SQL\r\nBut : présentation des transactions sql et de leur niveau d\'isolement, ainsi que des verrous explicites (programmation dans un SGBDR)\r\nLe cours est constitué de 17 diapos, découpées en 3 vidéos (durée totale 32mn) :\r\n1-6 : transactions\r\n7-13 : verrous et problèmes d\'accès\r\n14-17 : risques sur les verrous et cas d\'utilisation\r\n\r\nlien vers le pdf du cours :\r\nhttp://bit.ly/EmdsTransactions_verrous', 'A6tY7ZqiyVw');
-INSERT INTO `formation` (`id`, `playlist_id`, `published_at`, `title`, `description`, `video_id`) VALUES
+(225, 20, '2016-11-02 15:34:02', 'Cours Transactions et verrous (1 à 6 / 17) : transactions', 'Prérequis : connaissances basiques en SQL\r\nBut : présentation des transactions sql et de leur niveau d\'isolement, ainsi que des verrous explicites (programmation dans un SGBDR)\r\nLe cours est constitué de 17 diapos, découpées en 3 vidéos (durée totale 32mn) :\r\n1-6 : transactions\r\n7-13 : verrous et problèmes d\'accès\r\n14-17 : risques sur les verrous et cas d\'utilisation\r\n\r\nlien vers le pdf du cours :\r\nhttp://bit.ly/EmdsTransactions_verrous', 'A6tY7ZqiyVw'),
 (226, 21, '2016-10-31 14:26:37', 'Cours Curseurs(5 à 8 / 8) : curseur historique et curseur dans le SGBDR', 'Prérequis : connaissances en programmation et en SQL\r\nBut : présentation des 3 catégories de curseurs (programmation dans un SGBDR)\r\nLe cours est constitué de 8 diapos, découpées en 2 vidéos (durée totale 25mn) :\r\n1-4 : introduction et curseur objet\r\n5-8 : curseur historique et curseur dans le SGBDR\r\n\r\nlien vers le pdf du cours :\r\nhttp://bit.ly/EmdsCurseurs', '4H2GMEwqCjA'),
 (227, 21, '2016-10-31 14:11:01', 'Cours Curseurs(1 à 4 / 8) : introduction et curseur objet', 'Prérequis : connaissances en programmation et en SQL\r\nBut : présentation des 3 catégories de curseurs (programmation dans un SGBDR)\r\nLe cours est constitué de 8 diapos, découpées en 2 vidéos (durée totale 25mn) :\r\n1-4 : introduction et curseur objet\r\n5-8 : curseur historique et curseur dans le SGBDR\r\n\r\nlien vers le pdf du cours :\r\nhttp://bit.ly/EmdsCurseurs', 'Y09HkNAQTKw'),
 (228, 23, '2016-10-29 13:23:14', 'Cours Triggers (26 à 32 / 32) : procédures et fonctions stockées', 'Prérequis : connaissances en Merise2 (playlists MCD et Merise2) et SQL\r\nBut : introduction aux triggers et procédures stockées (programmation dans un SGBDR)\r\nLe cours est constitué de 32 diapos, découpées en 6 vidéos (durée totale 57mn) :\r\n1-4 : introduction\r\n5-9 : exemple trigger sur exclusion\r\n10-14 : exemple trigger sur inclusion\r\n15-20 : syntaxe du langage\r\n21-25 : inclusion multiple et autres exemples de triggers\r\n26-32 : procédures et fonctions stockées\r\n\r\nlien vers le pdf du cours :\r\nhttp://bit.ly/EmdsTriggers', '9WgLpEa8U-0'),
-(229, 23, '2016-10-29 13:18:58', 'Cours Triggers (21 à 25 / 32) : inclusion multiple et autres exemples de triggers', 'Prérequis : connaissances en Merise2 (playlists MCD et Merise2) et SQL\r\nBut : introduction aux triggers et procédures stockées (programmation dans un SGBDR)\r\nLe cours est constitué de 32 diapos, découpées en 6 vidéos (durée totale 57mn) :\r\n1-4 : introduction\r\n5-9 : exemple trigger sur exclusion\r\n10-14 : exemple trigger sur inclusion\r\n15-20 : syntaxe du langage\r\n21-25 : inclusion multiple et autres exemples de triggers\r\n26-32 : procédures et fonctions stockées\r\n\r\nlien vers le pdf du cours :\r\nhttp://bit.ly/EmdsTriggers', 'UHV1x3MO6yQ'),
+(229, 23, '2016-10-29 13:18:58', 'Cours Triggers (21 à 25 / 32) : inclusion multiple et autres exemples de triggers', 'Prérequis : connaissances en Merise2 (playlists MCD et Merise2) et SQL\r\nBut : introduction aux triggers et procédures stockées (programmation dans un SGBDR)\r\nLe cours est constitué de 32 diapos, découpées en 6 vidéos (durée totale 57mn) :\r\n1-4 : introduction\r\n5-9 : exemple trigger sur exclusion\r\n10-14 : exemple trigger sur inclusion\r\n15-20 : syntaxe du langage\r\n21-25 : inclusion multiple et autres exemples de triggers\r\n26-32 : procédures et fonctions stockées\r\n\r\nlien vers le pdf du cours :\r\nhttp://bit.ly/EmdsTriggers', 'UHV1x3MO6yQ');
+INSERT INTO `formation` (`id`, `playlist_id`, `published_at`, `title`, `description`, `video_id`) VALUES
 (230, 23, '2016-10-29 13:12:59', 'Cours Triggers (15 à 20 / 32) : syntaxe du langage', 'Prérequis : connaissances en Merise2 (playlists MCD et Merise2) et SQL\r\nBut : introduction aux triggers et procédures stockées (programmation dans un SGBDR)\r\nLe cours est constitué de 32 diapos, découpées en 6 vidéos (durée totale 57mn) :\r\n1-4 : introduction\r\n5-9 : exemple trigger sur exclusion\r\n10-14 : exemple trigger sur inclusion\r\n15-20 : syntaxe du langage\r\n21-25 : inclusion multiple et autres exemples de triggers\r\n26-32 : procédures et fonctions stockées\r\n\r\nlien vers le pdf du cours :\r\nhttp://bit.ly/EmdsTriggers', 'FKmNkR--SAI'),
 (231, 23, '2016-10-29 13:09:47', 'Cours Triggers (10 à 14 / 32) : exemple trigger sur inclusion', 'Prérequis : connaissances en Merise2 (playlists MCD et Merise2) et SQL\r\nBut : introduction aux triggers et procédures stockées (programmation dans un SGBDR)\r\nLe cours est constitué de 32 diapos, découpées en 6 vidéos (durée totale 57mn) :\r\n1-4 : introduction\r\n5-9 : exemple trigger sur exclusion\r\n10-14 : exemple trigger sur inclusion\r\n15-20 : syntaxe du langage\r\n21-25 : inclusion multiple et autres exemples de triggers\r\n26-32 : procédures et fonctions stockées\r\n\r\nlien vers le pdf du cours :\r\nhttp://bit.ly/EmdsTriggers', '1y6rUzV-tVs'),
 (232, 23, '2016-10-29 13:06:10', 'Cours Triggers (5 à 9 / 32) : exemple trigger sur exclusion', 'Prérequis : connaissances en Merise2 (playlists MCD et Merise2) et SQL\r\nBut : introduction aux triggers et procédures stockées (programmation dans un SGBDR)\r\nLe cours est constitué de 32 diapos, découpées en 6 vidéos (durée totale 57mn) :\r\n1-4 : introduction\r\n5-9 : exemple trigger sur exclusion\r\n10-14 : exemple trigger sur inclusion\r\n15-20 : syntaxe du langage\r\n21-25 : inclusion multiple et autres exemples de triggers\r\n26-32 : procédures et fonctions stockées\r\n\r\nlien vers le pdf du cours :\r\nhttp://bit.ly/EmdsTriggers', 'im5gkHcQ5Qw'),
 (233, 23, '2016-10-29 13:00:46', 'Cours Triggers (1 à 4 / 32) : introduction', 'Prérequis : connaissances en Merise2 (playlists MCD et Merise2) et SQL\r\nBut : introduction aux triggers et procédures stockées (programmation dans un SGBDR)\r\nLe cours est constitué de 32 diapos, découpées en 6 vidéos (durée totale 57mn) :\r\n1-4 : introduction\r\n5-9 : exemple trigger sur exclusion\r\n10-14 : exemple trigger sur inclusion\r\n15-20 : syntaxe du langage\r\n21-25 : inclusion multiple et autres exemples de triggers\r\n26-32 : procédures et fonctions stockées\r\n\r\nlien vers le pdf du cours :\r\nhttp://bit.ly/EmdsTriggers\r\nlien vers le pptx du cours :\r\nhttp://bit.ly/EmdsTriggersSlides', 'uDAhSKJW2ic'),
-(234, 22, '2016-10-27 14:03:44', 'Cours Informatique embarquée', 'Présentation sur l\'informatique embarquée et plus précisément sur la programmation des smartphones et tablettes.\r\n\r\n\r\nERRATUM : à 2:58 je disais qu\'une application web ne peut pas accéder aux fonctionnalités spécifiques aux mobile. C\'est faux car il existe des fonctions JavaScript qui maintenant le permettent. \r\n\r\nLien vers le pdf du cours :\r\nhttp://bit.ly/EmdsInformatique_embarquee', 'qX3LPE9yB_I'),
+(234, 4, '2026-03-21 15:37:33', 'Cours Informatique embarquée', 'Présentation sur l\'informatique embarquée et plus précisément sur la programmation des smartphones et tablettes.\r\n\r\n\r\nERRATUM : à 2:58 je disais qu\'une application web ne peut pas accéder aux fonctionnalités spécifiques aux mobile. C\'est faux car il existe des fonctions JavaScript qui maintenant le permettent. \r\n\r\nLien vers le pdf du cours :\r\nhttp://bit.ly/EmdsInformatique_embarquee', 'qX3LPE9yB_I'),
 (235, 24, '2016-09-25 10:18:29', 'Cours UML (25 à 33 / 33) : exercices', 'But : notions globales du langage de modélisation UML\r\nLe cours est constitué de 33 diapos, découpées en 6 vidéos (durée totale 57mn) :\r\n1-7 : introduction et cas d\'utilisation\r\n8-11 : diagramme de classes\r\n12-15 : diagramme d\'états\r\n16-18 : diagramme de séquences\r\n19-24 : autres diagrammes\r\n25-33 : exercices\r\n\r\nlien vers le pdf du cours :\r\nhttp://bit.ly/EmdsUML', 'YlcRl07eHXk'),
 (236, 24, '2016-09-25 10:14:03', 'Cours UML (19 à 24 / 33) : autres diagrammes', 'But : notions globales du langage de modélisation UML\r\nLe cours est constitué de 33 diapos, découpées en 6 vidéos (durée totale 57mn) :\r\n1-7 : introduction et cas d\'utilisation\r\n8-11 : diagramme de classes\r\n12-15 : diagramme d\'états\r\n16-18 : diagramme de séquences\r\n19-24 : autres diagrammes\r\n25-33 : exercices\r\n\r\nlien vers le pdf du cours :\r\nhttp://bit.ly/EmdsUML', '8g31nOjPNEM'),
 (237, 24, '2016-09-25 10:10:06', 'Cours UML (16 à 18 / 33) : diagramme de séquences', 'But : notions globales du langage de modélisation UML\r\nLe cours est constitué de 33 diapos, découpées en 6 vidéos (durée totale 57mn) :\r\n1-7 : introduction et cas d\'utilisation\r\n8-11 : diagramme de classes\r\n12-15 : diagramme d\'états\r\n16-18 : diagramme de séquences\r\n19-24 : autres diagrammes\r\n25-33 : exercices\r\n\r\nlien vers le pdf du cours :\r\nhttp://bit.ly/EmdsUML', 'OL2Ks4jeUZ0'),
 (238, 24, '2016-09-25 10:07:00', 'Cours UML (12 à 15 / 33) : diagramme d\'états', 'But : notions globales du langage de modélisation UML\r\nLe cours est constitué de 33 diapos, découpées en 6 vidéos (durée totale 57mn) :\r\n1-7 : introduction et cas d\'utilisation\r\n8-11 : diagramme de classes\r\n12-15 : diagramme d\'états\r\n16-18 : diagramme de séquences\r\n19-24 : autres diagrammes\r\n25-33 : exercices\r\n\r\nlien vers le pdf du cours :\r\nhttp://bit.ly/EmdsUML', 'L1x4sLVR7CI'),
 (239, 24, '2016-09-25 10:03:58', 'Cours UML (8 à 11 / 33) : diagramme de classes', 'But : notions globales du langage de modélisation UML\r\nLe cours est constitué de 33 diapos, découpées en 6 vidéos (durée totale 57mn) :\r\n1-7 : introduction et cas d\'utilisation\r\n8-11 : diagramme de classes\r\n12-15 : diagramme d\'états\r\n16-18 : diagramme de séquences\r\n19-24 : autres diagrammes\r\n25-33 : exercices\r\n\r\nlien vers le pdf du cours :\r\nhttp://bit.ly/EmdsUML', '8PmTJIrlS5w'),
-(240, 24, '2016-09-25 09:59:04', 'Cours UML (1 à 7 / 33) : introduction et cas d\'utilisation', 'But : notions globales du langage de modélisation UML\r\nLe cours est constitué de 33 diapos, découpées en 6 vidéos (durée totale 57mn) :\r\n1-7 : introduction et cas d\'utilisation\r\n8-11 : diagramme de classes\r\n12-15 : diagramme d\'états\r\n16-18 : diagramme de séquences\r\n19-24 : autres diagrammes\r\n25-33 : exercices\r\n\r\nlien vers le pdf du cours :\r\nhttp://bit.ly/EmdsUML\r\n\r\n\r\nRemarque :\r\nDe nouvelles vidéos sur UML :\r\nDiagramme de cas d\'utilisation : https://youtu.be/LDTDlXMV1xY', 'dJd6azZr9Kg');
+(240, 24, '2016-09-25 09:59:04', 'Cours UML (1 à 7 / 33) : introduction et cas d\'utilisation', 'But : notions globales du langage de modélisation UML\r\nLe cours est constitué de 33 diapos, découpées en 6 vidéos (durée totale 57mn) :\r\n1-7 : introduction et cas d\'utilisation\r\n8-11 : diagramme de classes\r\n12-15 : diagramme d\'états\r\n16-18 : diagramme de séquences\r\n19-24 : autres diagrammes\r\n25-33 : exercices\r\n\r\nlien vers le pdf du cours :\r\nhttp://bit.ly/EmdsUML\r\n\r\n\r\nRemarque :\r\nDe nouvelles vidéos sur UML :\r\nDiagramme de cas d\'utilisation : https://youtu.be/LDTDlXMV1xY', 'dJd6azZr9Kg'),
+(241, 7, '2026-03-21 12:19:01', 'Test', 'Test', 'abcdefg'),
+(243, 1, '2026-03-21 17:00:31', 'Test', '123 123', '1234'),
+(244, 1, '2026-03-25 09:06:00', 'Test', 'Test', 'azxazx'),
+(245, 1, '2026-03-25 09:27:39', 'Titre test', 'Test', 'Id');
 
 -- --------------------------------------------------------
 
@@ -355,7 +355,6 @@ CREATE TABLE IF NOT EXISTS `formation_categorie` (
 --
 
 INSERT INTO `formation_categorie` (`formation_id`, `categorie_id`) VALUES
-(1, 1),
 (2, 1),
 (3, 1),
 (4, 1),
@@ -439,7 +438,6 @@ INSERT INTO `formation_categorie` (`formation_id`, `categorie_id`) VALUES
 (77, 9),
 (78, 5),
 (78, 9),
-(79, 6),
 (80, 6),
 (81, 6),
 (82, 6),
@@ -448,7 +446,6 @@ INSERT INTO `formation_categorie` (`formation_id`, `categorie_id`) VALUES
 (85, 6),
 (86, 6),
 (88, 6),
-(89, 6),
 (98, 6),
 (99, 6),
 (100, 6),
@@ -619,7 +616,7 @@ INSERT INTO `formation_categorie` (`formation_id`, `categorie_id`) VALUES
 (232, 9),
 (233, 8),
 (233, 9),
-(234, 9),
+(234, 1),
 (235, 2),
 (235, 9),
 (236, 2),
@@ -642,9 +639,9 @@ INSERT INTO `formation_categorie` (`formation_id`, `categorie_id`) VALUES
 DROP TABLE IF EXISTS `messenger_messages`;
 CREATE TABLE IF NOT EXISTS `messenger_messages` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `body` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `headers` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `queue_name` varchar(190) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `body` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `headers` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue_name` varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)',
   `available_at` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)',
   `delivered_at` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
@@ -663,10 +660,10 @@ CREATE TABLE IF NOT EXISTS `messenger_messages` (
 DROP TABLE IF EXISTS `playlist`;
 CREATE TABLE IF NOT EXISTS `playlist` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` longtext COLLATE utf8mb4_unicode_ci,
+  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `playlist`
@@ -685,7 +682,7 @@ INSERT INTO `playlist` (`id`, `name`, `description`) VALUES
 (10, 'Sujet E5 SLAM 2017 métropole : cas AHM-23', 'Correction commentée des 4 missions (1 vidéo par mission).'),
 (11, 'TP Android (programmation mobile)\r\n', 'Réaliser une application Android complète (8h12mn)\r\n(installation et configuration d\'Android Studio, construction d\'une application MVC, construction d\'une interface, sauvegarde par sérialisation, sauvegarde dans une base locale SQLite, sauvegarde dans une base distante MySQL, multi-interfaces, listes adapters interactives)\r\n\r\nprérequis : avoir des connaissances en Java et en programmation objet\r\nlangage : Java \r\nIDE : Android Studio'),
 (12, 'POO TP Java', 'Ces vidéos vont permettre de créer étape par étape un TP en Java sous Eclipse, pour mettre en pratique les connaissances en programmation objet (normalement acquises avec la playlist du cours \"programmation objet\").\r\nCe TP va vous permettre de mieux comprendre assez rapidement plusieurs notions importantes en objet : vous allez travailler en MVC, utiliser une classe interface, des méthodes abstraites, des notions comme le polymorphisme, etc.'),
-(13, 'Bases de la programmation (C#)', 'Exemples progressifs de programmes en procédural, événementiel et objet sous Visual Studio (version Entreprise 2017).\r\nPrérequis : aucun\r\n\r\n1ère partie : programmation procédurale en mode console (non graphique)\r\nn°1 à 30 : procédural, notions élémentaires (variables, saisie/affichage, affectations/calculs, alternatives (if/switch), itérations (while/do-while/for))\r\nn°31 à 42 : procédural, tableaux (1 et 2 dimensions, manipulations, tris, recherches)\r\nn°43 à 59 : procédural, modules et paramètres (procédures et fonctions)\r\n\r\n2ème partie : événementiel (en mode graphique)\r\nn°60 à 67 : événementiel (programmation graphique)\r\n\r\n3ème partie : initiation à l\'objet\r\nn°68 à 74 : notions de base en programmation objet sur des classes \"métier\"'),
+(13, 'Bases de la programmation (C#) Test', '                        Exemples progressifs de programmes en procédural, événementiel et objet sous Visual Studio (version Entreprise 2017).\r\nPrérequis : aucun\r\n\r\n1ère partie : programmation procédurale en mode console (non graphique)\r\nn°1 à 30 : procédural, notions élémentaires (variables, saisie/affichage, affectations/calculs, alternatives (if/switch), itérations (while/do-while/for))\r\nn°31 à 42 : procédural, tableaux (1 et 2 dimensions, manipulations, tris, recherches)\r\nn°43 à 59 : procédural, modules et paramètres (procédures et fonctions)\r\n\r\n2ème partie : événementiel (en mode graphique)\r\nn°60 à 67 : événementiel (programmation graphique)\r\n\r\n3ème partie : initiation à l\'objet\r\nn°68 à 74 : notions de base en programmation objet sur des classes \"métier\"\r\n                    '),
 (14, 'Exercices triggers, sql et correctifs (sujets EDC BTS SIO)', 'Prérequis : avoir vu le cours triggers (et mcd)\r\nBut : Présenter comment traiter les parties triggers, sql et correctifs d\'un sujet de BTS SIO'),
 (15, 'Exercices objet (sujets EDC BTS SIO)', 'Prérequis : avoir vu le cours (playlist) objet\r\nBut : Présenter comment traiter la partie objet d\'un sujet de BTS SIO'),
 (16, 'MCD exercices d\'examen (sujets EDC BTS SIO)', 'Prérequis : avoir vu les cours \"Modèle relationnel et MCD\"\r\nhttps://youtu.be/VFHVNA8xgK0\r\net le cours Merise/2\r\nhttps://youtu.be/smTFM4GCEgc\r\nBut : Présenter comment traiter la partie conception de données de sujets de BTS SIO'),
@@ -694,13 +691,34 @@ INSERT INTO `playlist` (`id`, `name`, `description`) VALUES
 (19, 'Cours MCD vs Diagramme de classes', 'Cours MCD vs Diagramme de classes (26mn) :\r\nPrérequis : connaissances en MCD et Diagramme de classes\r\nBut : montrer comment passer du MCD au Diagramme de classes\r\nLe cours est constitué de 20 diapos, découpées en 2 vidéos (durée totale 26mn) :\r\n1-11 : introduction, entités, associations\r\n12-20 : héritage, contraintes, exercices\r\n\r\nLien vers le pdf du cours :\r\nhttp://bit.ly/EmdsMCD_vs_UML\r\n'),
 (20, 'Cours Transactions et verrou', 'Cours Transactions et verrous (32mn)\r\n\r\nPrérequis : connaissances basiques en SQL\r\nBut : présentation des transactions sql et de leur niveau d\'isolement, ainsi que des verrous explicites (programmation dans un SGBDR)\r\nLe cours est constitué de 17 diapos, découpées en 3 vidéos (durée totale 32mn) :\r\n1-6 : transactions\r\n7-13 : verrous et problèmes d\'accès\r\n14-17 : risques sur les verrous et cas d\'utilisation\r\n\r\nlien vers le pdf du cours :\r\nhttp://bit.ly/EmdsTransactions_verrous\r\n'),
 (21, 'Cours Curseurs', 'Cours Curseurs (25mn)\r\n\r\nPrérequis : connaissances en programmation et en SQL\r\nBut : présentation des 3 catégories de curseurs (programmation dans un SGBDR)\r\nLe cours est constitué de 8 diapos, découpées en 2 vidéos (durée totale 25mn) :\r\n1-4 : introduction et curseur objet\r\n5-8 : curseur historique et curseur dans le SGBDR\r\n\r\nlien vers le pdf du cours :\r\nhttp://bit.ly/EmdsCurseurs\r\n'),
-(22, 'Cours Informatique embarquée', 'Présentation rapide de l\'informatique embarquée (14mn24).\r\n\r\nLien vers le pdf du cours :\r\nhttp://bit.ly/EmdsInformatique_embarquee'),
 (23, 'Cours Triggers', 'Cours Triggers et procédures stockées (57mn)\r\n\r\nPrérequis : connaissances en Merise2 (playlists MCD et Merise2) et SQL\r\nBut : introduction aux triggers et procédures stockées (programmation dans un SGBDR)\r\nLe cours est constitué de 32 diapos, découpées en 6 vidéos (durée totale 57mn) :\r\n1-4 : introduction\r\n5-9 : exemple trigger sur exclusion\r\n10-14 : exemple trigger sur inclusion\r\n15-20 : syntaxe du langage\r\n21-25 : inclusion multiple et autres exemples de triggers\r\n26-32 : procédures et fonctions stockées\r\n\r\nlien vers le pdf du cours :\r\nhttp://bit.ly/EmdsTriggers'),
 (24, 'Cours UML', 'Cours UML (57mn)\r\nPrérequis : connaissances en objet \r\nBut : notions globales du langage de modélisation UML\r\nLe cours est constitué de 33 diapos, découpées en 6 vidéos (durée totale 57mn) :\r\n1-7 : introduction et cas d\'utilisation\r\n8-11 : diagramme de classes\r\n12-15 : diagramme d\'états\r\n16-18 : diagramme de séquences\r\n19-24 : autres diagrammes\r\n25-33 : exercices\r\n\r\nlien vers le pdf du cours :\r\nhttp://bit.ly/EmdsUML'),
 (25, 'Cours Merise/2', 'La playlist contient :\r\n- la nouvelle version du cours en une seule vidéo\r\n\r\nLien vers le pdf du cours :\r\nhttp://bit.ly/EmdsMerise2'),
 (26, 'Cours Modèle relationnel et MCD', 'La playlist contient :\r\n- la nouvelle version du cours en une seule vidéo (1h08)\r\n\r\nLien vers le pdf du cours :\r\nhttp://bit.ly/EmdsMCD'),
-(27, 'Cours de programmation objet', 'La playlist contient :\r\n- la nouvelle version du cours en une seule vidéo\r\n\r\nLien vers le pdf du cours :\r\nhttp://bit.ly/EmdsObjet'),
-(28, 'playlist test', 'description playlist test');
+(27, 'Cours de programmation objet', 'La playlist contient :\r\n- la nouvelle version du cours en une seule vidéo\r\n\r\nLien vers le pdf du cours :\r\nhttp://bit.ly/EmdsObjet');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `user`
+--
+
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE IF NOT EXISTS `user` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `username` varchar(180) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `roles` json NOT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_IDENTIFIER_USERNAME` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `user`
+--
+
+INSERT INTO `user` (`id`, `username`, `roles`, `password`) VALUES
+(1, 'admin', '[\"ROLE_ADMIN\"]', '$2y$13$7CC2au4qKYhnCGwHyRl.iew4dYW2tHarKpk3AmSlRaz4363QwLFge');
 
 --
 -- Contraintes pour les tables déchargées
